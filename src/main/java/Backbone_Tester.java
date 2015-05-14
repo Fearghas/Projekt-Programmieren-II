@@ -20,29 +20,31 @@ public class Backbone_Tester {
         int returnValue = chooser.showOpenDialog(null);
 
 
-        //File file = null;
-        //File file = chooser.getSelectedFile();
-
-
         if (returnValue == APPROVE_OPTION) {// Ausgabe der ausgewaehlten Datei
-            // file = chooser.getSelectedFile();
-        } else if (returnValue == JFileChooser.CANCEL_OPTION) {
-            //do cancel option
-
             File file = chooser.getSelectedFile();
             Scanner test_Scanner = new Scanner(file);
 
-            while (test_Scanner.hasNext()) {
-                //String x_Achse = test_Scanner.nextLine(); => if else bedingung erste zeile oder zweite zeile, dann nextLine und split
-                //String y_Achse = x_Achse;
-                double x_Wert = test_Scanner.nextDouble();
-                double y_Wert = test_Scanner.nextDouble();
-                Backbone paar = new Backbone(/*x_Achse, y_Achse,*/ x_Wert, y_Wert);
-                test.add(paar);
-            }
+            while (test_Scanner.hasNext())
+            {
+              //String x_Achse = test_Scanner.nextLine(); //=> if else bedingung erste zeile oder zweite zeile, dann nextLine und split
+              //String y_Achse = x_Achse;
+              String x_Wert = test_Scanner.nextLine().split(" ")[1];
 
-            //2 neue Array Listen für x_Spalte und y_Spalte
-            ArrayList<Double> x_Spalte = new ArrayList<Double>();
+                System.out.println(x_Wert);
+              //String[] parts = x_Wert.split(".");
+               // for(int i = 0; i <10; i++){
+                    //System.out.println(Arrays.toString(parts));
+                }
+               // String part1 = parts[0]; // 004
+               // String part2 = parts[1]; // 034556
+              //double y_Wert = test_Scanner.nextDouble();
+              //Backbone paar = new Backbone(/*x_Achse, y_Achse,*/ x_Wert, y_Wert);
+              //test.add(paar);
+                //System.out.println(part1);
+
+
+            }
+            /*ArrayList<Double> x_Spalte = new ArrayList<Double>();
             ArrayList<Double> y_Spalte = new ArrayList<Double>();
 
             //reference table anzeigen lassen
@@ -72,8 +74,11 @@ public class Backbone_Tester {
                     minimum = x_Spalte.get(i);
                 }
             }
-            System.out.println(minimum);
+            System.out.println(minimum);*/
+
+        } //else if (returnValue == JFileChooser.CANCEL_OPTION) {
+            //do cancel option
 
         }
-    }
-}
+    //}
+//}
