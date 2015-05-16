@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by Briareus on 15/05/2015.
+ * Created by Briareus on 16.05.2015.
  */
-public class tab_delimited implements Formatloader
+public class zeilen_delimited implements Formatloader
 {
 
     @Override
@@ -29,27 +29,34 @@ public class tab_delimited implements Formatloader
         }
 
         //alle Rohdaten trennen und im Container speichern
-        int variablen_Anzahl = 0;
-        String [] berechnunganzahlvariablen = file_Scanner.nextLine().split("\\t");
-        for( int i = 0; i <= berechnunganzahlvariablen.length; i++)
-        {
-            variablen_Anzahl = i;
-        }
+        String fetchvariable = file_Scanner.nextLine();
+        int variablen_Anzahl = Integer.parseInt(fetchvariable);
 
         for (int i = 0; i < variablen_Anzahl; i++)
         {
-            beschriftung.add(berechnunganzahlvariablen[i]);
+            String berechnunganzahlvariablen = file_Scanner.nextLine();
+            beschriftung.add(berechnunganzahlvariablen);
         }
         String x_Achse = beschriftung.get(0);
         String y_Achse = beschriftung.get(1);
 
-        while (file_Scanner.hasNext())
+        //get delimiter character
+        String delimiter = file_Scanner.nextLine();
+
+        //scan values and store in array
+        String [] value = file_Scanner.nextLine().split(delimiter);
+        for (int i = 0; i < value.length; i++)
         {
-            String [] value = file_Scanner.nextLine().split ("\\t");
-            x_Werte.add(Double.parseDouble(value[0]));
-            y_Werte.add(Double.parseDouble(value[1]));
+            x_Werte.add(Double.parseDouble(value[i]));
+        }
+
+        String [] value2 = file_Scanner.nextLine().split(delimiter);
+        for (int i = 0; i < value.length; i++)
+        {
+            y_Werte.add(Double.parseDouble(value2[i]));
         }
 
         return new Format(x_Achse, y_Achse, x_Werte, y_Werte);
+
     }
 }

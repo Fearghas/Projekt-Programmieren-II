@@ -26,15 +26,23 @@ public class Format_Tester
             String pathname = file.getCanonicalPath();
             if (pathname.contains("txt"))
             {
-                Formatloader loader = null;
+                Formatloader loader;
                 loader = new tab_delimited();
                 loader.loadformat(pathname);
                 Format one = loader.loadformat(pathname);
                 System.out.println(one);
             }
+            else if (pathname.contains("lin"))
+            {
+                Formatloader loader;
+                loader = new zeilen_delimited();
+                loader.loadformat(pathname);
+                Format two = loader.loadformat(pathname);
+                System.out.println(two);
+            }
             else
             {
-                System.out.println("Oh, oh... File is not a TEXT File!");
+                System.out.println("Oh, oh... File is not supported!");
             }
         }
         else if (returnValue == JFileChooser.CANCEL_OPTION)

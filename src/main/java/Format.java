@@ -68,6 +68,6 @@ public class Format
     {
         return "x-Achse: " + x_Achse + "\ny-Achse: " + y_Achse + "\nx-Werte: " + x_Wert + "\ny-Werte: " + y_Wert
                 + "\nmaximum x-Wert: " + getMaximum(x_Wert) + "\nminimum x-Wert: " + getMinimum(x_Wert) + "\nAnzahl x-Werte: " + getAnzahlWerte(x_Wert)
-                + "\nmaximum y-Wert: " + getMaximum(y_Wert) + "\nminimum y-Wert: " + getMinimum(y_Wert) + "\nAnzahl x-Werte: " + getAnzahlWerte(y_Wert);
+                + "\nmaximum y-Wert: " + getMaximum(y_Wert) + "\nminimum y-Wert: " + getMinimum(y_Wert) + "\nAnzahl y-Werte: " + getAnzahlWerte(y_Wert);
     }
 }
