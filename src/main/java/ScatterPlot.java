@@ -35,14 +35,13 @@ public class ScatterPlot extends Application implements Formatloader//Scatterplo
 
 
         ScatterChart.getData().addAll(Serie1, Serie2);
-        Scene scene  = new Scene(ScatterChart, 600, 400); //grösse des Fensters
+        Scene scene  = new Scene(ScatterChart, 600, 400); //grÃ¶sse des Fensters
         stage.setScene(scene);
         stage.show();
     }
 
-    public static void main(String[] args) {
 
-    }
+ 
     @Override
     public Format loadformat(String fileName) {
         return null;
