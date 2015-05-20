@@ -6,7 +6,7 @@ import static javax.swing.JFileChooser.APPROVE_OPTION;
 /**
  * Created by Briareus on 15/05/2015.
  */
-public class Format_Tester
+public class FormatTest
 {
     public static void main(String[] args) throws IOException
 

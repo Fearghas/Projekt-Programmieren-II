@@ -29,7 +29,6 @@ public class MainPanel extends JFrame{
         mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.X_AXIS));
         mainPanel.add(InputPanel);
         mainPanel.add(ButtonPanel);
-        mainPanel.add(mainPanel);
         setContentPane(mainPanel);
     }
 
@@ -41,7 +40,7 @@ public class MainPanel extends JFrame{
                 MainPanel Scatter = new MainPanel();
                 Scatter.setVisible(true);
             }
-            ArrayList<Double> min = format.getMinimum(); //testen ob es geht
+            //double min = format.getMinimumx(); //testen ob es geht
 
         });
     }
