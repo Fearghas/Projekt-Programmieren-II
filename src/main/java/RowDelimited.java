@@ -59,8 +59,7 @@ public class RowDelimited implements Formatloader
         return new Format(xAchse, yAchse, xWerte, yWerte);
 
     }
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> fc4f9b8f6e9c53e00727fc20500a399d081bb641
+
+
