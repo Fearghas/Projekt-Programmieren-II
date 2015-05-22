@@ -58,12 +58,24 @@ public class TestDrawingPanel extends JPanel
         {
             double x_1 = (Double) wertex.get(i);
             int barHeight = (int) ( x_1/ 500 * getHeight()); //500 magic number! => Skalierung einstellen?
+<<<<<<< HEAD
             int x = i * barWidth;
             int y = getHeight() - barHeight;
+=======
+
+            int x = i * barWidth;
+            int y = getHeight() - barHeight;
+
+>>>>>>> fc4f9b8f6e9c53e00727fc20500a399d081bb641
             g.setColor(Color.ORANGE);
             g.fillRect(x, y, barWidth, barHeight);
             g.setColor(Color.YELLOW);
             g.drawRect(x, y, barWidth, barHeight);
         }*/
     }
+<<<<<<< HEAD
 }
+=======
+}
+
+>>>>>>> fc4f9b8f6e9c53e00727fc20500a399d081bb641
