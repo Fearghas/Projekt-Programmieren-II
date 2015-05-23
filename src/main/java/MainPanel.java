@@ -1,47 +1,92 @@
+import java.awt.BorderLayout;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
-/**
- * Created by Andreas on 19.05.2015.
- */
-public class MainPanel extends JFrame{
-    private static final int WIDTH = 800;
-    private static  final int HEIGHT =600;
-    private static Format format;
+public class MainPanel extends JFrame {
+    JMenuBar menueBar;
+    JMenu fileMenue;
+    JMenu editMenue;
+    JMenuItem openItem;
+    JMenuItem closeItem;
 
-    private MainPanel(){
+    public MainPanel() {
+        this.setTitle("Scattergramm und Histogramm Applikation");
+        this.setSize(600, 400);
 
-        //Configure frame appearance
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setTitle("ScatterPlot");
-        setSize(WIDTH, HEIGHT);
-        setVisible(true);
+        menueBar = new JMenuBar();
+        fileMenue = new JMenu("Datei");
+        editMenue = new JMenu("Bearbeiten");
 
-        //Set UI parts
-        JPanel InputPanel = new JPanel();
-        JPanel ButtonPanel = new JPanel();
-        JButton X_Achse = new JButton("X Achse");
-        ButtonPanel.add(X_Achse);
+        // Men¸punkte  erzeuge
+        openItem = new JMenuItem("\u00d6ffnen");
+        closeItem = new JMenuItem("Schliessen");
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.X_AXIS));
-        mainPanel.add(InputPanel);
-        mainPanel.add(ButtonPanel);
-        setContentPane(mainPanel);
-    }
+        // Men¸punkte dem Datei-Men¸ hinzuf¸gen
+        fileMenue.add(openItem);
+        fileMenue.add(closeItem);
+
+        //Datei-Men¸  Men¸leiste hinzuf¸g
+        menueBar.add(fileMenue);
+        menueBar.add(editMenue);
+
+        //Men¸leiste JFrame hinzuf¸g
+        this.add(menueBar, BorderLayout.NORTH);
 
 
+        openItem.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));  // Dialog zum Oeffnen von Dateien anzeigen
+           int returnValue= fileChooser.showOpenDialog(null);
+            File file = fileChooser.getSelectedFile();
+            try {
+                String pathname = file.getCanonicalPath();
+                if (pathname.contains("txt"))
+                {
+                    Formatloader loader;
+                    loader = new TabDelimited();
+                    loader.loadformat(pathname);
+                    Format tab = loader.loadformat(pathname);
+                    System.out.println(tab);
+                    JFrame frame = new JFrame(pathname);
+                    frame.setSize(500, 500);
+                    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    frame.setLocationRelativeTo(null); // center on screen
+                    TestDrawingPanel pain = new TestDrawingPanel(tab);
+                    //pain.setLayout(new BorderLayout());
+                    frame.add(pain);
+                    frame.setVisible(true);
+                }
+                else if (pathname.contains("lin")) {
+                    Formatloader loader;
+                    loader = new RowDelimited();
+                    loader.loadformat(pathname);
+                    Format lin = loader.loadformat(pathname);
+                    System.out.println(lin);
+                    JFrame frame = new JFrame(pathname);
+                    frame.setSize(500, 500);
+                    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    frame.setLocationRelativeTo(null); // center on screen
+                    TestDrawingPanel pain = new TestDrawingPanel(lin);
+                    frame.add(pain);
+                    frame.setVisible(true);
+                }
+                else
+                {
+                    System.out.println("Oh, oh... File is not supported!");
+                }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-           @Override public void run() {
-                MainPanel Scatter = new MainPanel();
-                Scatter.setVisible(true);
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
-            //double min = format.getMinimumx(); //testen ob es geht
 
         });
+
+        closeItem.addActionListener(e -> {
+            //Programm schlieﬂen
+            System.exit(0);
+        });
     }
+
+
 }
