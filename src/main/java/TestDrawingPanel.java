@@ -15,7 +15,6 @@ public class TestDrawingPanel extends JPanel
     {
         this.datenmodell = datenmodell;
     }
-
     protected void paintComponent(Graphics g)
     {
         String xlabel = datenmodell.getxName();
@@ -28,8 +27,6 @@ public class TestDrawingPanel extends JPanel
         AffineTransform at = g2d.getTransform();
         g2d.translate(0, getHeight());
         g2d.scale(1, -1); //Invert the y-axis.
-
-
 
         for (int i = 0; i < wertex.size(); i++)
         {
