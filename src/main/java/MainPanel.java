@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
@@ -49,9 +48,9 @@ public class MainPanel extends JFrame {
                     loader.loadformat(pathname);
                     Format tab = loader.loadformat(pathname);
                     System.out.println(tab);
-                    JFrame frame = new MenueBar();
-                    //frame.setSize(500, 500);
-                    //frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    JFrame frame = new JFrame(pathname);
+                    frame.setSize(800, 800);
+                    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                     frame.setLocationRelativeTo(null); // center on screen
                     TestDrawingPanel pain = new TestDrawingPanel(tab);
                     //pain.setLayout(new BorderLayout());
@@ -83,7 +82,7 @@ public class MainPanel extends JFrame {
 
         });
 
-        closeItem.addActionListener((ActionEvent e) -> {
+        closeItem.addActionListener(e -> {
             //Programm schlieﬂen
             System.exit(0);
         });
