@@ -102,10 +102,5 @@ public class TestDrawingPanel extends JPanel
             g.drawRect(x, y, barWidth, barHeight);
         }*/
     }
-
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 }
 
