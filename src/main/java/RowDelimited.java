@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -6,7 +7,7 @@ import java.util.Scanner;
 /**
  * Created by Briareus on 16.05.2015.
  */
-public class RowDelimited implements Formatloader
+public class RowDelimited extends JFrame implements Formatloader
 {
 
     @Override

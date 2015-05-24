@@ -10,9 +10,9 @@ public class MainPanel extends JFrame {
     JMenuItem openItem;
     JMenuItem closeItem;
 
-    public MainPanel() {
+    protected MainPanel() {
         this.setTitle("Scattergramm und Histogramm Applikation");
-        this.setSize(600, 400);
+        this.setSize(500, 300);
 
         menueBar = new JMenuBar();
         fileMenue = new JMenu("Datei");
@@ -43,7 +43,7 @@ public class MainPanel extends JFrame {
                 String pathname = file.getCanonicalPath();
                 if (pathname.contains("txt"))
                 {
-                    Formatloader loader;
+                    Formatloader loader = new TabDelimited();
                     loader = new TabDelimited();
                     loader.loadformat(pathname);
                     Format tab = loader.loadformat(pathname);
@@ -63,7 +63,7 @@ public class MainPanel extends JFrame {
                     loader.loadformat(pathname);
                     Format lin = loader.loadformat(pathname);
                     System.out.println(lin);
-                    JFrame frame = new JFrame(pathname);
+                    JFrame frame = new JFrame();
                     frame.setSize(500, 500);
                     frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                     frame.setLocationRelativeTo(null); // center on screen
