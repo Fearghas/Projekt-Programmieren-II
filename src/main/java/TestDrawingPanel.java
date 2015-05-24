@@ -1,3 +1,5 @@
+import javafx.beans.binding.DoubleExpression;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -10,6 +12,12 @@ public class TestDrawingPanel extends JPanel
 {
     private final Format datenmodell; //Übernahme von Format Klasse; muss nicht Bezeichnung datenmodell haben
     private String line;
+    double endpointx;
+    double endpointy;
+    /*int x;
+    int y;
+    int nextpointx;
+    int nextpointy;*/
 
     public TestDrawingPanel(Format datenmodell)
     {
@@ -68,17 +76,49 @@ public class TestDrawingPanel extends JPanel
         g2d.scale(1, -1); //Invert the y-axis
 
         //Punkte einzeichnen
+
         for (int i = 0; i < wertex.size(); i++)
         {
             double getX = (Double) wertex.get(i);
             double getY = (Double) wertey.get(i);
+            /*ArrayList<Double> modifiedx = new ArrayList<>();
+            modifiedx.add(getX);
+            System.out.println(wertex.size());
+            ArrayList<Double> modifiedy = new ArrayList<>();
+            modifiedy.add(getY);*/
+
+
+                if (i == wertex.size() - 1)
+                {
+                    endpointx = (Double) wertex.get(0);
+                    endpointy = (Double) wertey.get(0);
+                }
+                else
+                {
+                    endpointx = (Double) wertex.get(i + 1);
+                    endpointy = (Double) wertey.get(i + 1);
+                }
+
+
 
             int x = (int) (getX * scaleWidth);
             int y = (int) (getY * scaleHeight);
+            int nextpointx = (int) (endpointx * scaleWidth);
+            int nextpointy = (int) (endpointy * scaleHeight);
+
 
             g.setColor(Color.BLUE);
-            g.fillOval(x, y, 5, 5);
+            g.fillOval(x, y, 10, 10);
+
+            for (int a = 0; a < 10; a++)
+            {
+                g.drawLine(x, y, nextpointx, nextpointy);
+                x = nextpointx;
+                y = nextpointy;
+            }
         }
+
+
         g2d.setTransform(at);
 
         //Test Histogramm mit einer Variable
