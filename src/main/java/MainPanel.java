@@ -50,11 +50,8 @@ public class MainPanel extends JFrame {
                     Format tab = loader.loadformat(pathname);
                     System.out.println(tab);
                     JFrame frame = new MenueBar();
-                    //frame.setSize(500, 500);
-                    //frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                     frame.setLocationRelativeTo(null); // center on screen
                     TestDrawingPanel pain = new TestDrawingPanel(tab);
-                    //pain.setLayout(new BorderLayout());
                     frame.add(pain);
                     frame.setVisible(true);
                 }
@@ -64,9 +61,7 @@ public class MainPanel extends JFrame {
                     loader.loadformat(pathname);
                     Format lin = loader.loadformat(pathname);
                     System.out.println(lin);
-                    JFrame frame = new JFrame();
-                    frame.setSize(500, 500);
-                    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    JFrame frame = new MenueBar();
                     frame.setLocationRelativeTo(null); // center on screen
                     TestDrawingPanel pain = new TestDrawingPanel(lin);
                     frame.add(pain);
