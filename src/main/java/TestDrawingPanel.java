@@ -91,6 +91,11 @@ public class TestDrawingPanel extends JPanel
             int x = i * barWidth;
             int y = getHeight() - barHeight;
 
+
+            int x = i * barWidth;
+            int y = getHeight() - barHeight;
+
+
             g.setColor(Color.ORANGE);
             g.fillRect(x, y, barWidth, barHeight);
             g.setColor(Color.YELLOW);
@@ -98,6 +103,9 @@ public class TestDrawingPanel extends JPanel
         }*/
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 }
 

@@ -52,4 +52,8 @@ public class TabDelimited implements Formatloader
 
         return new Format(xAchse, yAchse, xWerte, yWerte);
     }
+
 }
+
+
+
