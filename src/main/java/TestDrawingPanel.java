@@ -18,37 +18,66 @@ public class TestDrawingPanel extends JPanel
 
     protected void paintComponent(Graphics g)
     {
-        String xlabel = datenmodell.getxName();
-        String ylabel = datenmodell.getyName();
-        int xMaximum = (int) datenmodell.getMaximumx();
-        int yMaximum = (int) datenmodell.getMaximumy();
+        //Instanzen
         ArrayList wertex = datenmodell.getarrayx();
         ArrayList wertey = datenmodell.getarrayy();
+        double xMaximum = datenmodell.getMaximumx();
+        double xMinimum = datenmodell.getMinimumx();
+        double yMaximum = datenmodell.getMaximumy();
+        double yMinimum = datenmodell.getMinimumy();
+        double contentWidth;
+        double contentHeight;
+        String xlabel = datenmodell.getxName();
+        String ylabel = datenmodell.getyName();
+
+        //4 Bedingungen Koordinatensystem
+        if (xMinimum >= 0 && yMinimum >= 0)
+        {
+            contentWidth = xMaximum + xMinimum;
+            contentHeight = yMaximum + yMinimum;
+            xMinimum = 0;
+            yMinimum = 0;
+        }
+        else if (xMinimum < 1 && yMinimum >= 0)
+        {
+            xMinimum = -1 * xMinimum;
+            contentWidth = xMaximum + xMinimum;
+            contentHeight = yMaximum + yMinimum;
+            yMinimum = 0;
+        }
+        else if (xMinimum >= 0 && yMinimum < 1)
+        {
+            yMinimum = -1 * yMinimum;
+            contentWidth = xMaximum + xMinimum;
+            contentHeight = yMaximum + yMinimum;
+            xMinimum = 0;
+        }
+        else
+        {
+            xMinimum = -1 * xMinimum;
+            yMinimum = -1 * yMinimum;
+            contentWidth = xMaximum + xMinimum;
+            contentHeight = yMaximum + yMinimum;
+        }
+
+        final double scaleWidth = getWidth() / contentWidth;
+        final double scaleHeight = getHeight() / contentHeight;
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform at = g2d.getTransform();
-        g2d.translate(0, getHeight());
-        g2d.scale(1, -1); //Invert the y-axis.
+        g2d.translate(0 + (scaleWidth) * xMinimum, getHeight() - (scaleHeight) * yMinimum);//Koordinatenursprung verschieben
+        g2d.scale(1, -1); //Invert the y-axis
 
-
-
+        //Punkte einzeichnen
         for (int i = 0; i < wertex.size(); i++)
         {
-            double x_1 = (Double) wertex.get(i);
-            double y_1 = (Double) wertey.get(i);
-            int x = (int) x_1 ;
-            int y = (int) y_1;
-            if (x > 500 || y > 500 )
-            {
-                x = x / 10;
-                y = y / 10;
-            }
-            else if (x < 5 || y < 5)
-            {
-                x = x * 100;
-                y = x * 100;
-            }
+            double getX = (Double) wertex.get(i);
+            double getY = (Double) wertey.get(i);
+
+            int x = (int) (getX * scaleWidth);
+            int y = (int) (getY * scaleHeight);
+
             g.setColor(Color.BLUE);
-            g.fillOval(x, y, 10, 10);
+            g.fillOval(x, y, 5, 5);
         }
         g2d.setTransform(at);
 
@@ -68,5 +97,7 @@ public class TestDrawingPanel extends JPanel
             g.drawRect(x, y, barWidth, barHeight);
         }*/
     }
+
+
 }
 
