@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -26,13 +27,12 @@ public class MenueBar extends JFrame {
         // Menüpunkte  erzeuge
         closeItem = new JMenuItem("Schliessen");
         pointItem = new JMenuItem("Verbinden");
-        bigSize = new JMenuItem("Vergr\u00f6ssern");
+        bigSize = new JMenuItem("Gr\u00f6sse");
 
         // Menüpunkte dem Datei-Menü hinzufügen
         editMenue.add(pointItem);
         editMenue.add(bigSize);
         fileMenue.add(closeItem);
-
 
         //Datei-Menü  Menüleiste hinzufüg
         menueBar.add(fileMenue);
@@ -40,5 +40,14 @@ public class MenueBar extends JFrame {
 
         //Menüleiste JFrame hinzufüg
         this.add(menueBar, BorderLayout.NORTH);
+
+        pointItem.addActionListener(e ->{
+        //Code hier für Punktverbindungen
+        });
+
+        bigSize.addActionListener(e ->{
+            //Code hier für PunktGrösse einstellen
+        });
     }
+
 }
