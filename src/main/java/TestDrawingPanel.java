@@ -14,10 +14,6 @@ public class TestDrawingPanel extends JPanel
     private String line;
     double endpointx;
     double endpointy;
-    /*int x;
-    int y;
-    int nextpointx;
-    int nextpointy;*/
 
     public TestDrawingPanel(Format datenmodell)
     {
@@ -88,7 +84,7 @@ public class TestDrawingPanel extends JPanel
             modifiedy.add(getY);*/
 
 
-                if (i == wertex.size() - 1)
+                if (i == wertex.size() - 1)//magic number
                 {
                     endpointx = (Double) wertex.get(0);
                     endpointy = (Double) wertey.get(0);
