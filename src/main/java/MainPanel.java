@@ -45,7 +45,6 @@ public class MainPanel extends JFrame {
                 {
                     Formatloader loader = new TabDelimited();
                     loader = new TabDelimited();
-                    loader.loadformat(pathname);
                     Format tab = loader.loadformat(pathname);
                     System.out.println(tab);
                     JFrame frame = new JFrame(pathname);
@@ -60,7 +59,6 @@ public class MainPanel extends JFrame {
                 else if (pathname.contains("lin")) {
                     Formatloader loader;
                     loader = new RowDelimited();
-                    loader.loadformat(pathname);
                     Format lin = loader.loadformat(pathname);
                     System.out.println(lin);
                     JFrame frame = new JFrame();
