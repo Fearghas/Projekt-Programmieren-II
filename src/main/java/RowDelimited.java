@@ -57,7 +57,8 @@ public class RowDelimited extends JFrame implements Formatloader
             yWerte.add(Double.parseDouble(value2[i]));
         }
 
-        return new Format(xAchse, yAchse, xWerte, yWerte);
+        return null;
+        //return new Format(xAchse, yAchse, xWerte, yWerte);
 
     }
 

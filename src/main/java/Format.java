@@ -5,26 +5,34 @@ import java.util.ArrayList;
  */
 public class Format
 {
-    private String xName;
+    private Variable xAxis;
+    private Variable yAxis;
+    /*private String xName;
     private String yName;
     private ArrayList<Double> xValues;
-    private ArrayList<Double> yValues;
+    private ArrayList<Double> yValues;*/
 
-    public Format(String xName, String yName, ArrayList<Double> xValues, ArrayList<Double> yValues)
+    /*public Format(String xName, ArrayList<Double> xValues, String yName, ArrayList<Double> yValues)
     {
         this.xName = xName;
         this.yName = yName;
         this.xValues = xValues;
         this.yValues = yValues;
+    }*/
+
+    public Format(Variable a, Variable b)
+    {
+        this.xAxis = a;
+        this.yAxis = b;
     }
 
     public String getxName()
     {
-        return xName;
+        return xAxis.getName();
     }
     public String getyName()
     {
-        return yName;
+        return yAxis.getName();
     }
 
     public double calculateMaximum(ArrayList<Double> axis)
@@ -54,22 +62,22 @@ public class Format
 
     public double getMaximumx()
     {
-        return calculateMaximum(xValues);
+        return calculateMaximum(xAxis.getValues());
     }
 
     public double getMaximumy()
     {
-        return calculateMaximum(yValues);
+        return calculateMaximum(yAxis.getValues());
     }
 
     public double getMinimumx()
     {
-        return calculateMinimum(xValues);
+        return calculateMinimum(xAxis.getValues());
     }
 
     public double getMinimumy()
     {
-        return calculateMinimum(yValues);
+        return calculateMinimum(yAxis.getValues());
     }
 
     public int getTotalValues(ArrayList<Double> axis)
@@ -84,19 +92,19 @@ public class Format
 
     public ArrayList getarrayx()
     {
-        return xValues;
+        return xAxis.getValues();
     }
 
     public ArrayList getarrayy()
     {
-        return yValues;
+        return yAxis.getValues();
     }
 
     @Override
     public String toString()
     {
-        return "x-Achse: " + xName + "\ny-Achse: " + yName + "\nx-Werte: " + xValues + "\ny-Werte: " + yValues
-                + "\nmaximum x-Wert: " + getMaximumx() + "\nminimum x-Wert: " + getMinimumx() + "\nAnzahl x-Werte: " + getTotalValues(xValues)
-                + "\nmaximum y-Wert: " + getMaximumy() + "\nminimum y-Wert: " + getMinimumy() + "\nAnzahl y-Werte: " + getTotalValues(yValues);
+        return "x-Achse: " + getxName() + "\ny-Achse: " + getyName() + "\nx-Werte: " + getarrayx() + "\ny-Werte: " + getarrayy()
+                + "\nmaximum x-Wert: " + getMaximumx() + "\nminimum x-Wert: " + getMinimumx() + "\nAnzahl x-Werte: " + getTotalValues(xAxis.getValues())
+                + "\nmaximum y-Wert: " + getMaximumy() + "\nminimum y-Wert: " + getMinimumy() + "\nAnzahl y-Werte: " + getTotalValues(yAxis.getValues());
     }
 }

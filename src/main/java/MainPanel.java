@@ -43,28 +43,32 @@ public class MainPanel extends JFrame {
                 String pathname = file.getCanonicalPath();
                 if (pathname.contains("txt"))
                 {
-                    Formatloader loader = new TabDelimited();
-                    loader = new TabDelimited();
-                    Format tab = loader.loadformat(pathname);
+                    Formatloader loader = new TabDelimited();//Loader, der benutzt wird
+                    Format tab = loader.loadformat(pathname);//Loader, der benutzt wird auf File benutzt
                     System.out.println(tab);
-
                     JFrame frame = new JFrame(pathname);
+                    //JFrame histogramm = new JFrame(pathname);
                     frame.setSize(800, 800);
-                    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    //histogramm.setSize(800, 800);
+                    //frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    //histogramm.setDefaultCloseOperation(EXIT_ON_CLOSE);
                     frame = new MenueBar();
                     frame.setLocationRelativeTo(null); // center on screen
-                    TestDrawingPanel pain = new TestDrawingPanel(tab);
+                    DrawingPanel pain = new DrawingPanel(tab);
                     frame.add(pain);
+                    Histogramm horror = new Histogramm(tab);
+                    //histogramm.add(horror);
                     frame.setVisible(true);
+                    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    //histogramm.setVisible(true);
                 }
                 else if (pathname.contains("lin")) {
-                    Formatloader loader;
-                    loader = new RowDelimited();
+                    Formatloader loader = new RowDelimited();
                     Format lin = loader.loadformat(pathname);
                     System.out.println(lin);
                     JFrame frame = new MenueBar();
                     frame.setLocationRelativeTo(null); // center on screen
-                    TestDrawingPanel pain = new TestDrawingPanel(lin);
+                    DrawingPanel pain = new DrawingPanel(lin);
                     frame.add(pain);
                     frame.setVisible(true);
                 }

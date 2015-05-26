@@ -3,11 +3,14 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.text.Normalizer;
 
 /**
  * Created by Andreas on 24.05.2015.
  */
-public class MenueBar extends JFrame {
+public class MenueBar extends JFrame
+{
+    //private final TestDrawingPanel datenmodell;
     JMenuBar menueBar;
     JMenu fileMenue;
     JMenu editMenue;
@@ -15,9 +18,9 @@ public class MenueBar extends JFrame {
     JMenuItem pointItem;
     JMenuItem bigSize;
 
-    protected MenueBar (){
-
-        this.setTitle("Scatter-App");
+    protected MenueBar()
+    {
+        //this.datenmodell = datenmodell;
         this.setSize(600, 600);
 
         menueBar = new JMenuBar();
@@ -48,6 +51,8 @@ public class MenueBar extends JFrame {
         bigSize.addActionListener(e ->{
             //Code hier für PunktGrösse einstellen
         });
+
     }
+
 
 }

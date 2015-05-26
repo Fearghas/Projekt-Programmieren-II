@@ -1,23 +1,34 @@
-import javafx.beans.binding.DoubleExpression;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 /**
  * Created by Briareus on 19.05.2015.
  */
-public class TestDrawingPanel extends JPanel
+public class DrawingPanel extends JPanel implements ActionListener
 {
     private final Format datenmodell; //Übernahme von Format Klasse; muss nicht Bezeichnung datenmodell haben
     private String line;
+    private int pointSize;
     double endpointx;
     double endpointy;
 
-    public TestDrawingPanel(Format datenmodell)
+    public DrawingPanel(Format datenmodell)
     {
         this.datenmodell = datenmodell;
+    }
+
+    public int getPointSize()
+    {
+        return pointSize;
+    }
+
+    public void setPointSize(int pointSize)
+    {
+        this.pointSize = pointSize;
     }
 
     protected void paintComponent(Graphics g)
@@ -70,67 +81,55 @@ public class TestDrawingPanel extends JPanel
         AffineTransform at = g2d.getTransform();
         g2d.translate(0 + (scaleWidth) * xMinimum, getHeight() - (scaleHeight) * yMinimum);//Koordinatenursprung verschieben
         g2d.scale(1, -1); //Invert the y-axis
-
-        //Punkte einzeichnen
-
-        for (int i = 0; i < wertex.size(); i++)
+        setPointSize(5);
+        drawPoints(wertex, wertey, g, scaleWidth, scaleHeight); //nur Punkte werden eingezeichnet
+        drawLines(wertex, wertey, g, scaleWidth, scaleHeight);  //nur Linien werden eingezeichnet
+        g2d.setTransform(at);//y-axis wieder rückgängig gemacht, nicht notwendig
+    }
+    public void drawPoints(ArrayList<Double> xWerte, ArrayList<Double> yWerte, Graphics g, double scaleWidth, double scaleHeight)
+    {
+        for (int i = 0; i < xWerte.size(); i++)
         {
-            double getX = (Double) wertex.get(i);
-            double getY = (Double) wertey.get(i);
-            /*ArrayList<Double> modifiedx = new ArrayList<>();
-            modifiedx.add(getX);
-            System.out.println(wertex.size());
-            ArrayList<Double> modifiedy = new ArrayList<>();
-            modifiedy.add(getY);*/
+            double getX = xWerte.get(i);
+            double getY = yWerte.get(i);
 
+            int x = (int) (getX * scaleWidth);
+            int y = (int) (getY * scaleHeight);
 
-                if (i == wertex.size() - 1)//magic number
-                {
-                    endpointx = (Double) wertex.get(0);
-                    endpointy = (Double) wertey.get(0);
-                }
-                else
-                {
-                    endpointx = (Double) wertex.get(i + 1);
-                    endpointy = (Double) wertey.get(i + 1);
-                }
+            g.setColor(Color.BLUE);
+            g.fillOval(x, y, getPointSize(), getPointSize());
+        }
+    }
 
-
-
+    public void drawLines(ArrayList<Double> xWerte, ArrayList<Double> yWerte, Graphics g, double scaleWidth, double scaleHeight)
+    {
+        for (int i = 0; i < xWerte.size(); i++)
+        {
+            double getX = xWerte.get(i);
+            double getY = yWerte.get(i);
+            if (i == xWerte.size() - 1)//magic number
+            {
+                //endpointx = (Double) wertex.get(0);
+                //endpointy = (Double) wertey.get(0);
+            }
+            else
+            {
+                endpointx = xWerte.get(i + 1);
+                endpointy = yWerte.get(i + 1);
+            }
             int x = (int) (getX * scaleWidth);
             int y = (int) (getY * scaleHeight);
             int nextpointx = (int) (endpointx * scaleWidth);
             int nextpointy = (int) (endpointy * scaleHeight);
-
-
-            g.setColor(Color.BLUE);
-            g.fillOval(x, y, 10, 10);
-
-            for (int a = 0; a < 10; a++)
-            {
-                g.drawLine(x, y, nextpointx, nextpointy);
-                x = nextpointx;
-                y = nextpointy;
-            }
+            int correctionX = getPointSize() / 2;
+            int correctionY = getPointSize() / 2;
+            g.setColor(Color.red);
+            g.drawLine(x + correctionX, y + correctionY, nextpointx + correctionX, nextpointy + correctionY);
         }
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-        g2d.setTransform(at);
-
-        //Test Histogramm mit einer Variable
-        /*int barWidth = getWidth() / wertex.size();
-        for (int i = 0; i < wertex.size(); i++)
-        {
-            double x_1 = (Double) wertex.get(i);
-            int barHeight = (int) ( x_1/ 500 * getHeight()); //500 magic number! => Skalierung einstellen?
-            int x = i * barWidth;
-            int y = getHeight() - barHeight;
-            int x = i * barWidth;
-            int y = getHeight() - barHeight;
-            g.setColor(Color.ORANGE);
-            g.fillRect(x, y, barWidth, barHeight);
-            g.setColor(Color.YELLOW);
-            g.drawRect(x, y, barWidth, barHeight);
-        }*/
     }
 }
