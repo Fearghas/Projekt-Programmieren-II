@@ -101,11 +101,11 @@ public class TabDelimited implements Formatloader
             four = createVariable(vierterName, vierteVariable);
             five = createVariable(fuenfterName, fuenfteVariable);
             //Variable six = createVariable(ersterName, ersteVariable);
-            setChooseVariableX(two);
-            setChooseVariableY(three);
+            //setChooseVariableX(two);
+            //setChooseVariableY(three);
         }
-        /*setChooseVariableX(three);
-        setChooseVariableY(four);*/
+        setChooseVariableX(one);
+        setChooseVariableY(two);
 
         return new Format(getChooseVariableX(), getChooseVariableY());
     }

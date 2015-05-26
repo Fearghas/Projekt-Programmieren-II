@@ -48,29 +48,30 @@ public class MainPanel extends JFrame {
                     System.out.println(tab);
                     JFrame frame = new JFrame(pathname);
                     //JFrame histogramm = new JFrame(pathname);
-                    frame.setSize(800, 800);
+
                     //histogramm.setSize(800, 800);
                     //frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                     //histogramm.setDefaultCloseOperation(EXIT_ON_CLOSE);
-                    frame = new MenueBar();
-                    frame.setLocationRelativeTo(null); // center on screen
+                    //frame = new MenueBar(); //erstellt Taskleiste im Scatterplot
                     DrawingPanel pain = new DrawingPanel(tab);
                     frame.add(pain);
-                    Histogramm horror = new Histogramm(tab);
+                    frame.setSize(500, 500);
+                    frame.setLocationRelativeTo(null); // center on screen
+                    //Histogramm horror = new Histogramm(tab);
                     //histogramm.add(horror);
                     frame.setVisible(true);
                     frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                     //histogramm.setVisible(true);
                 }
                 else if (pathname.contains("lin")) {
-                    Formatloader loader = new RowDelimited();
+                    /*Formatloader loader = new RowDelimited();
                     Format lin = loader.loadformat(pathname);
                     System.out.println(lin);
                     JFrame frame = new MenueBar();
                     frame.setLocationRelativeTo(null); // center on screen
                     DrawingPanel pain = new DrawingPanel(lin);
                     frame.add(pain);
-                    frame.setVisible(true);
+                    frame.setVisible(true);*/
                 }
                 else
                 {
