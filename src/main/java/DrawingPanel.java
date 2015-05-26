@@ -15,6 +15,8 @@ public class DrawingPanel extends JPanel implements ActionListener
     private int pointSize;
     double endpointx;
     double endpointy;
+    boolean drawPoints = true;
+    boolean drawLines = false;
 
     JMenuBar menueBar;
     JMenu fileMenue;
@@ -22,6 +24,7 @@ public class DrawingPanel extends JPanel implements ActionListener
     JMenuItem closeItem;
     JMenuItem pointItem;
     JMenuItem bigSize;
+
 
     public DrawingPanel(Format datenmodell)
     {
@@ -37,6 +40,8 @@ public class DrawingPanel extends JPanel implements ActionListener
     {
         this.pointSize = pointSize;
     }
+
+
 
     protected void paintComponent(Graphics g)
     {
@@ -86,15 +91,20 @@ public class DrawingPanel extends JPanel implements ActionListener
         final double scaleHeight = getHeight() / contentHeight;
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform at = g2d.getTransform();
-        g2d.translate(0 + (scaleWidth) * xMinimum, getHeight() - (scaleHeight) * yMinimum);//Koordinatenursprung verschieben
+        g2d.translate(0 + scaleWidth * xMinimum, getHeight() - scaleHeight * yMinimum);//Koordinatenursprung verschieben
         g2d.scale(1, -1); //Invert the y-axis
         setPointSize(5);
-        drawPoints(wertex, wertey, g, scaleWidth, scaleHeight); //nur Punkte werden eingezeichnet
-        drawLines(wertex, wertey, g, scaleWidth, scaleHeight);  //nur Linien werden eingezeichnet
+        if (drawPoints)
+        {
+            drawPoints(wertex, wertey, g, scaleWidth, scaleHeight);
+        } //nur Punkte werden eingezeichnet
+        if (drawLines)
+        {
+            drawLines(wertex, wertey, g, scaleWidth, scaleHeight);
+        };//nur Linien werden eingezeichnet
         MenueBar();
         g2d.setTransform(at);//y-axis wieder rückgängig gemacht, nicht notwendig
     }
-
 
     protected void MenueBar()
     {
@@ -123,7 +133,8 @@ public class DrawingPanel extends JPanel implements ActionListener
         this.add(menueBar, BorderLayout.NORTH);
 
         pointItem.addActionListener(e ->{
-            //Code hier für Punktverbindungen
+           drawLines = true;
+           repaint();       //Code hier einfügen
         });
 
         bigSize.addActionListener(e ->{
@@ -171,7 +182,9 @@ public class DrawingPanel extends JPanel implements ActionListener
             g.setColor(Color.red);
             g.drawLine(x + correctionX, y + correctionY, nextpointx + correctionX, nextpointy + correctionY);
         }
+
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
