@@ -1,22 +1,26 @@
-import java.awt.BorderLayout;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 
-public class MainPanel extends JFrame {
+public class MainPanel extends JFrame
+{
+    //DrawingPanel plot;
     JMenuBar menueBar;
     JMenu fileMenue;
-    JMenu editMenue;
+    JMenu optionsOne;
     JMenuItem openItem;
     JMenuItem closeItem;
 
     protected MainPanel() {
         this.setTitle("Scattergramm und Histogramm Applikation");
-        this.setSize(500, 300);
+        this.setSize(200, 200);
 
         menueBar = new JMenuBar();
         fileMenue = new JMenu("Datei");
-        editMenue = new JMenu("Bearbeiten");
+        optionsOne = new JMenu("Bearbeiten");
 
         // Menüpunkte  erzeuge
         openItem = new JMenuItem("\u00d6ffnen");
@@ -28,7 +32,7 @@ public class MainPanel extends JFrame {
 
         //Datei-Menü  Menüleiste hinzufüg
         menueBar.add(fileMenue);
-        menueBar.add(editMenue);
+        menueBar.add(optionsOne);
 
         //Menüleiste JFrame hinzufüg
         this.add(menueBar, BorderLayout.NORTH);
@@ -46,21 +50,17 @@ public class MainPanel extends JFrame {
                     Formatloader loader = new TabDelimited();//Loader, der benutzt wird
                     Format tab = loader.loadformat(pathname);//Loader, der benutzt wird auf File benutzt
                     System.out.println(tab);
-                    JFrame frame = new JFrame(pathname);
-                    //JFrame histogramm = new JFrame(pathname);
 
-                    //histogramm.setSize(800, 800);
-                    //frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-                    //histogramm.setDefaultCloseOperation(EXIT_ON_CLOSE);
-                    //frame = new MenueBar(); //erstellt Taskleiste im Scatterplot
-                    DrawingPanel pain = new DrawingPanel(tab);
-                    frame.add(pain);
-                    frame.setSize(500, 500);
-                    frame.setLocationRelativeTo(null); // center on screen
-                    //Histogramm horror = new Histogramm(tab);
-                    //histogramm.add(horror);
-                    frame.setVisible(true);
-                    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    JFrame scatterplotFrame = new JFrame(pathname);
+                    DrawingPanel plot = new DrawingPanel(tab);
+
+                    plot.setPointSize(3);   //default point size
+                    scatterplotFrame.add(plot);
+                    addOptionsBar(scatterplotFrame, plot);
+                    scatterplotFrame.setSize(500, 500);
+                    scatterplotFrame.setLocationRelativeTo(null); // center on screen
+                    scatterplotFrame.setVisible(true);
+                    scatterplotFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                     //histogramm.setVisible(true);
                 }
                 else if (pathname.contains("lin")) {
@@ -90,5 +90,118 @@ public class MainPanel extends JFrame {
         });
     }
 
+    private void addOptionsBar(JFrame frame, DrawingPanel area)
+    {
+        JMenuBar optionsBar;
+        JMenu optionsOne;
+        JMenu optionsTwo;
+        JMenu optionsThree;
+        JMenuItem connectPoints;
+        JMenuItem removePoints;
+        JMenuItem one, two, three, four, five;
+        JMenu pointSize;
+        JMenuItem colorOne, colorTwo, colorThree;
 
+        //Initialisierung
+        optionsBar = new JMenuBar();
+        optionsOne = new JMenu("Dots");
+        optionsTwo = new JMenu("Size");
+        optionsThree = new JMenu("Color");
+
+
+        // Menüpunkte  erzeugen
+        connectPoints = new JMenuItem("Connect");
+        removePoints = new JMenuItem("Unconnect");
+        pointSize = new JMenu("Pixel");
+
+        one = new JMenuItem("2");
+        two = new JMenuItem("3");
+        three = new JMenuItem("5");
+        four = new JMenuItem("7");
+        five = new JMenuItem("10");
+
+        // Menüpunkte dem Datei-Menü hinzufügen
+        optionsOne.add(connectPoints);
+        optionsOne.add(removePoints);
+        optionsTwo.add(pointSize);
+        pointSize.add(one);
+        pointSize.add(two);
+        pointSize.add(three);
+        pointSize.add(four);
+        pointSize.add(five);
+
+
+        //Datei-Menü  Menüleiste hinzufüg
+        optionsBar.add(optionsOne);
+        optionsBar.add(optionsTwo);
+        optionsBar.add(optionsThree);
+
+        //Menüleiste JFrame hinzufüg
+        frame.add(optionsBar, BorderLayout.NORTH);
+
+        //Listener
+        connectPoints.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                area.addLines();
+            }
+        });
+
+        removePoints.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                area.removeLines();
+            }
+        });
+
+        one.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                area.changePointSize(2);
+
+            }
+        });
+
+        two.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                area.changePointSize(3);
+
+            }
+        });
+
+        three.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                area.changePointSize(5);
+
+            }
+        });
+
+        four.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                area.changePointSize(7);
+            }
+        });
+
+        five.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                area.changePointSize(10);
+            }
+        });
+
+
+        optionsThree.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                Color color = JColorChooser.showDialog(null, "Color", null);
+                System.out.println("Hello");
+            }
+        });
+
+
+    }
 }

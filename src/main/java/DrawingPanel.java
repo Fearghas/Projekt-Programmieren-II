@@ -1,29 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 /**
  * Created by Briareus on 19.05.2015.
  */
-public class DrawingPanel extends JPanel implements ActionListener
+public class DrawingPanel extends JPanel
 {
     private final Format datenmodell; //Übernahme von Format Klasse; muss nicht Bezeichnung datenmodell haben
-    private String line;
     private int pointSize;
+    private int input;
     double endpointx;
     double endpointy;
-    boolean drawPoints = true;
-    boolean drawLines = false;
-
-    JMenuBar menueBar;
-    JMenu fileMenue;
-    JMenu editMenue;
-    JMenuItem closeItem;
-    JMenuItem pointItem;
-    JMenuItem bigSize;
+    boolean flagPoints = true;
+    boolean flagLines = false;
 
 
     public DrawingPanel(Format datenmodell)
@@ -40,8 +31,6 @@ public class DrawingPanel extends JPanel implements ActionListener
     {
         this.pointSize = pointSize;
     }
-
-
 
     protected void paintComponent(Graphics g)
     {
@@ -93,55 +82,20 @@ public class DrawingPanel extends JPanel implements ActionListener
         AffineTransform at = g2d.getTransform();
         g2d.translate(0 + scaleWidth * xMinimum, getHeight() - scaleHeight * yMinimum);//Koordinatenursprung verschieben
         g2d.scale(1, -1); //Invert the y-axis
-        setPointSize(5);
-        if (drawPoints)
+        setPointSize(pointSize);
+        if (flagPoints)
         {
             drawPoints(wertex, wertey, g, scaleWidth, scaleHeight);
         } //nur Punkte werden eingezeichnet
-        if (drawLines)
+        if (flagLines)
         {
             drawLines(wertex, wertey, g, scaleWidth, scaleHeight);
         };//nur Linien werden eingezeichnet
-        MenueBar();
+
         g2d.setTransform(at);//y-axis wieder rückgängig gemacht, nicht notwendig
     }
 
-    protected void MenueBar()
-    {
-        //this.datenmodell = datenmodell;
-        //this.setSize(600, 600);
-
-        menueBar = new JMenuBar();
-        fileMenue = new JMenu("Datei");
-        editMenue = new JMenu("Punkte");
-
-        // Menüpunkte  erzeuge
-        closeItem = new JMenuItem("Schliessen");
-        pointItem = new JMenuItem("Verbinden");
-        bigSize = new JMenuItem("Gr\u00f6sse");
-
-        // Menüpunkte dem Datei-Menü hinzufügen
-        editMenue.add(pointItem);
-        editMenue.add(bigSize);
-        fileMenue.add(closeItem);
-
-        //Datei-Menü  Menüleiste hinzufüg
-        menueBar.add(fileMenue);
-        menueBar.add(editMenue);
-
-        //Menüleiste JFrame hinzufüg
-        this.add(menueBar, BorderLayout.NORTH);
-
-        pointItem.addActionListener(e ->{
-           drawLines = true;
-           repaint();       //Code hier einfügen
-        });
-
-        bigSize.addActionListener(e ->{
-            //Code hier für PunktGrösse einstellen
-        });
-    }
-
+    //Methode Punkte zeichnen
     public void drawPoints(ArrayList<Double> xWerte, ArrayList<Double> yWerte, Graphics g, double scaleWidth, double scaleHeight)
     {
         for (int i = 0; i < xWerte.size(); i++)
@@ -157,6 +111,7 @@ public class DrawingPanel extends JPanel implements ActionListener
         }
     }
 
+    //Methode Linien zeichnen
     public void drawLines(ArrayList<Double> xWerte, ArrayList<Double> yWerte, Graphics g, double scaleWidth, double scaleHeight)
     {
         for (int i = 0; i < xWerte.size(); i++)
@@ -182,12 +137,27 @@ public class DrawingPanel extends JPanel implements ActionListener
             g.setColor(Color.red);
             g.drawLine(x + correctionX, y + correctionY, nextpointx + correctionX, nextpointy + correctionY);
         }
-
     }
 
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
+    //Methode Punkte verbinden
+    public void addLines()
+    {
+        flagLines = true;
+        repaint();
     }
+
+    //Methode Punkte entfernen
+    public void removeLines()
+    {
+        flagLines = false;
+        repaint();
+    }
+
+    public void changePointSize(int number)
+    {
+        pointSize = number;
+        repaint();
+    }
+
 }
+
