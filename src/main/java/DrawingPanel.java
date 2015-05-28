@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
@@ -10,11 +12,12 @@ public class DrawingPanel extends JPanel
 {
     private final Format datenmodell; //Übernahme von Format Klasse; muss nicht Bezeichnung datenmodell haben
     private int pointSize;
-    private int input;
-    double endpointx;
-    double endpointy;
-    boolean flagPoints = true;
-    boolean flagLines = false;
+    private Color chooser;
+    private double endpointx;
+    private double endpointy;
+    private boolean flagPoints = true;
+    private boolean flagLines = false;
+
 
 
     public DrawingPanel(Format datenmodell)
@@ -22,18 +25,9 @@ public class DrawingPanel extends JPanel
         this.datenmodell = datenmodell;
     }
 
-    public int getPointSize()
-    {
-        return pointSize;
-    }
-
-    public void setPointSize(int pointSize)
-    {
-        this.pointSize = pointSize;
-    }
-
     protected void paintComponent(Graphics g)
     {
+        super.paintComponent(g);
         //Instanzen
         ArrayList wertex = datenmodell.getarrayx();
         ArrayList wertey = datenmodell.getarrayy();
@@ -82,7 +76,7 @@ public class DrawingPanel extends JPanel
         AffineTransform at = g2d.getTransform();
         g2d.translate(0 + scaleWidth * xMinimum, getHeight() - scaleHeight * yMinimum);//Koordinatenursprung verschieben
         g2d.scale(1, -1); //Invert the y-axis
-        setPointSize(pointSize);
+
         if (flagPoints)
         {
             drawPoints(wertex, wertey, g, scaleWidth, scaleHeight);
@@ -91,13 +85,14 @@ public class DrawingPanel extends JPanel
         {
             drawLines(wertex, wertey, g, scaleWidth, scaleHeight);
         };//nur Linien werden eingezeichnet
-
         g2d.setTransform(at);//y-axis wieder rückgängig gemacht, nicht notwendig
     }
+
 
     //Methode Punkte zeichnen
     public void drawPoints(ArrayList<Double> xWerte, ArrayList<Double> yWerte, Graphics g, double scaleWidth, double scaleHeight)
     {
+
         for (int i = 0; i < xWerte.size(); i++)
         {
             double getX = xWerte.get(i);
@@ -106,7 +101,7 @@ public class DrawingPanel extends JPanel
             int x = (int) (getX * scaleWidth);
             int y = (int) (getY * scaleHeight);
 
-            g.setColor(Color.BLUE);
+            g.setColor(chooser);
             g.fillOval(x, y, getPointSize(), getPointSize());
         }
     }
@@ -153,10 +148,34 @@ public class DrawingPanel extends JPanel
         repaint();
     }
 
-    public void changePointSize(int number)
+    //Methode Punktgrösse einstellen
+    public void setPointSize(int number)
     {
         pointSize = number;
         repaint();
+    }
+
+    public int getPointSize()
+    {
+        return pointSize;
+    }
+
+    //Method Farbe aussuchen
+    protected void setPlotColor()
+    {
+        JColorChooser color = new JColorChooser(Color.BLUE);
+        ActionListener okActionListener = (new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                chooser = color.getColor();
+            }
+        });
+        JDialog dialog = JColorChooser.createDialog(null, "Change Color of Dots",
+        true, color, okActionListener, null);
+        dialog.setVisible(true);
+
+        repaint(); //wieder mit den alten Punkten und alte Farbe und gleichzeiteig neue Punkte mit neuen Farben
+        //return chooser;
     }
 
 }

@@ -5,14 +5,14 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 
-public class MainPanel extends JFrame
-{
+public class MainPanel extends JFrame {
     //DrawingPanel plot;
     JMenuBar menueBar;
     JMenu fileMenue;
     JMenu optionsOne;
     JMenuItem openItem;
     JMenuItem closeItem;
+    private Color chooser;
 
     protected MainPanel() {
         this.setTitle("Scattergramm und Histogramm Applikation");
@@ -41,20 +41,17 @@ public class MainPanel extends JFrame
         openItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));  // Dialog zum Oeffnen von Dateien anzeigen
-           int returnValue= fileChooser.showOpenDialog(null);
+            int returnValue = fileChooser.showOpenDialog(null);
             File file = fileChooser.getSelectedFile();
             try {
                 String pathname = file.getCanonicalPath();
-                if (pathname.contains("txt"))
-                {
+                if (pathname.contains("txt")) {
                     Formatloader loader = new TabDelimited();//Loader, der benutzt wird
                     Format tab = loader.loadformat(pathname);//Loader, der benutzt wird auf File benutzt
                     System.out.println(tab);
-
                     JFrame scatterplotFrame = new JFrame(pathname);
                     DrawingPanel plot = new DrawingPanel(tab);
-
-                    plot.setPointSize(3);   //default point size
+                    plot.setPointSize(5);   //default point size
                     scatterplotFrame.add(plot);
                     addOptionsBar(scatterplotFrame, plot);
                     scatterplotFrame.setSize(500, 500);
@@ -62,8 +59,7 @@ public class MainPanel extends JFrame
                     scatterplotFrame.setVisible(true);
                     scatterplotFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                     //histogramm.setVisible(true);
-                }
-                else if (pathname.contains("lin")) {
+                } else if (pathname.contains("lin")) {
                     /*Formatloader loader = new RowDelimited();
                     Format lin = loader.loadformat(pathname);
                     System.out.println(lin);
@@ -72,9 +68,7 @@ public class MainPanel extends JFrame
                     DrawingPanel pain = new DrawingPanel(lin);
                     frame.add(pain);
                     frame.setVisible(true);*/
-                }
-                else
-                {
+                } else {
                     System.out.println("Oh, oh... File is not supported!");
                 }
 
@@ -90,8 +84,7 @@ public class MainPanel extends JFrame
         });
     }
 
-    private void addOptionsBar(JFrame frame, DrawingPanel area)
-    {
+    private void addOptionsBar(JFrame frame, DrawingPanel area) {
         JMenuBar optionsBar;
         JMenu optionsOne;
         JMenu optionsTwo;
@@ -100,7 +93,7 @@ public class MainPanel extends JFrame
         JMenuItem removePoints;
         JMenuItem one, two, three, four, five;
         JMenu pointSize;
-        JMenuItem colorOne, colorTwo, colorThree;
+        JMenuItem changeColor;
 
         //Initialisierung
         optionsBar = new JMenuBar();
@@ -108,12 +101,11 @@ public class MainPanel extends JFrame
         optionsTwo = new JMenu("Size");
         optionsThree = new JMenu("Color");
 
-
         // Menüpunkte  erzeugen
         connectPoints = new JMenuItem("Connect");
         removePoints = new JMenuItem("Unconnect");
         pointSize = new JMenu("Pixel");
-
+        changeColor = new JMenuItem("Choose");
         one = new JMenuItem("2");
         two = new JMenuItem("3");
         three = new JMenuItem("5");
@@ -129,6 +121,7 @@ public class MainPanel extends JFrame
         pointSize.add(three);
         pointSize.add(four);
         pointSize.add(five);
+        optionsThree.add(changeColor);
 
 
         //Datei-Menü  Menüleiste hinzufüg
@@ -157,7 +150,7 @@ public class MainPanel extends JFrame
         one.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                area.changePointSize(2);
+                area.setPointSize(2);
 
             }
         });
@@ -165,7 +158,7 @@ public class MainPanel extends JFrame
         two.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                area.changePointSize(3);
+                area.setPointSize(3);
 
             }
         });
@@ -173,7 +166,7 @@ public class MainPanel extends JFrame
         three.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                area.changePointSize(5);
+                area.setPointSize(5);
 
             }
         });
@@ -181,27 +174,24 @@ public class MainPanel extends JFrame
         four.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                area.changePointSize(7);
+                area.setPointSize(7);
             }
         });
 
         five.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                area.changePointSize(10);
+                area.setPointSize(10);
             }
         });
 
-
-        optionsThree.addActionListener(new ActionListener() {
+        changeColor.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                area.setPlotColor();
 
-                Color color = JColorChooser.showDialog(null, "Color", null);
-                System.out.println("Hello");
             }
         });
-
-
     }
 }
+
