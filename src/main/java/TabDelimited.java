@@ -40,7 +40,7 @@ public class TabDelimited implements Formatloader
         ArrayList<Double> sechsteVariable = new ArrayList<Double>();
         ArrayList<Double> siebteVariable = new ArrayList<Double>();
         String ersterName, zweiterName, dritterName, vierterName, fuenfterName, sechsterName;
-        Variable one, two, three, four, five = null;
+        Variable one, two, three, four, five;
 
         //Initialisierung Scanner
         Scanner fileScanner;

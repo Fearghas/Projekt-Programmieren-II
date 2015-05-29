@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by Briareus on 19.05.2015.
  */
-public class DrawingPanel extends JPanel
+public class ScatterplotDrawingPanel extends JPanel
 {
     private final Format datenmodell; //Übernahme von Format Klasse; muss nicht Bezeichnung datenmodell haben
     private int pointSize;
@@ -20,7 +20,7 @@ public class DrawingPanel extends JPanel
 
 
 
-    public DrawingPanel(Format datenmodell)
+    public ScatterplotDrawingPanel(Format datenmodell)
     {
         this.datenmodell = datenmodell;
     }

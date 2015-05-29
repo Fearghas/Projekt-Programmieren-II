@@ -7,18 +7,7 @@ public class Format
 {
     private Variable xAxis;
     private Variable yAxis;
-    /*private String xName;
-    private String yName;
-    private ArrayList<Double> xValues;
-    private ArrayList<Double> yValues;*/
 
-    /*public Format(String xName, ArrayList<Double> xValues, String yName, ArrayList<Double> yValues)
-    {
-        this.xName = xName;
-        this.yName = yName;
-        this.xValues = xValues;
-        this.yValues = yValues;
-    }*/
 
     public Format(Variable a, Variable b)
     {
@@ -60,7 +49,7 @@ public class Format
         return minimum;
     }
 
-    public double getMaximumx()
+     public double getMaximumx()
     {
         return calculateMaximum(xAxis.getValues());
     }

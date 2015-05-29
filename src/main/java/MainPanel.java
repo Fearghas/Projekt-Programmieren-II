@@ -50,7 +50,7 @@ public class MainPanel extends JFrame {
                     Format tab = loader.loadformat(pathname);//Loader, der benutzt wird auf File benutzt
                     System.out.println(tab);
                     JFrame scatterplotFrame = new JFrame(pathname);
-                    DrawingPanel plot = new DrawingPanel(tab);
+                    ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(tab);
                     plot.setPointSize(5);   //default point size
                     scatterplotFrame.add(plot);
                     addOptionsBar(scatterplotFrame, plot);
@@ -58,16 +58,40 @@ public class MainPanel extends JFrame {
                     scatterplotFrame.setLocationRelativeTo(null); // center on screen
                     scatterplotFrame.setVisible(true);
                     scatterplotFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+                    //Histogramm aufrufen für eine Variable
+                    JFrame histogramFrame = new JFrame(pathname);
+                    HistogramDrawingPanel xPlot = new HistogramDrawingPanel(tab);
+                    histogramFrame.add(xPlot);
+                    histogramFrame.setTitle(tab.getxName());
+                    histogramFrame.setSize(250, 250);
+                    histogramFrame.setVisible(true);
+                    histogramFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
                     //histogramm.setVisible(true);
-                } else if (pathname.contains("lin")) {
-                    /*Formatloader loader = new RowDelimited();
+                }
+                else if (pathname.contains("lin")) {
+                    Formatloader loader = new RowDelimited();
                     Format lin = loader.loadformat(pathname);
                     System.out.println(lin);
-                    JFrame frame = new MenueBar();
-                    frame.setLocationRelativeTo(null); // center on screen
-                    DrawingPanel pain = new DrawingPanel(lin);
-                    frame.add(pain);
-                    frame.setVisible(true);*/
+                    JFrame scatterplotFrame = new JFrame(pathname);
+                    ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(lin);
+                    plot.setPointSize(5);   //default point size
+                    scatterplotFrame.add(plot);
+                    addOptionsBar(scatterplotFrame, plot);
+                    scatterplotFrame.setSize(500, 500);
+                    scatterplotFrame.setLocationRelativeTo(null); // center on screen
+                    scatterplotFrame.setVisible(true);
+                    scatterplotFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+                    //Histogramm aufrufen für eine Variable
+                    JFrame histogramFrame = new JFrame(pathname);
+                    HistogramDrawingPanel xPlot = new HistogramDrawingPanel(lin);
+                    histogramFrame.add(xPlot);
+                    histogramFrame.setTitle(lin.getxName());
+                    histogramFrame.setSize(250, 250);
+                    histogramFrame.setVisible(true);
+                    histogramFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                 } else {
                     System.out.println("Oh, oh... File is not supported!");
                 }
@@ -84,7 +108,7 @@ public class MainPanel extends JFrame {
         });
     }
 
-    private void addOptionsBar(JFrame frame, DrawingPanel area) {
+    private void addOptionsBar(JFrame frame, ScatterplotDrawingPanel area) {
         JMenuBar optionsBar;
         JMenu optionsOne;
         JMenu optionsTwo;
