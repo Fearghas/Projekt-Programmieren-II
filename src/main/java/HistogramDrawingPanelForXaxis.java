@@ -5,14 +5,14 @@ import java.util.ArrayList;
 /**
  * Created by Briareus on 25.05.2015.
  */
-public class HistogramDrawingPanel extends JPanel
+public class HistogramDrawingPanelForXaxis extends JPanel
 {
     private final Format datenmodell; //Übernahme von Format Klasse; muss nicht Bezeichnung datenmodell haben
     private String line;
     double endpointx;
     double endpointy;
 
-    public HistogramDrawingPanel(Format datenmodell)
+    public HistogramDrawingPanelForXaxis(Format datenmodell)
     {
         this.datenmodell = datenmodell;
     }

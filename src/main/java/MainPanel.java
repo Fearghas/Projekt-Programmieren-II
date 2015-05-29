@@ -60,13 +60,22 @@ public class MainPanel extends JFrame {
                     scatterplotFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
                     //Histogramm aufrufen für eine Variable
-                    JFrame histogramFrame = new JFrame(pathname);
-                    HistogramDrawingPanel xPlot = new HistogramDrawingPanel(tab);
-                    histogramFrame.add(xPlot);
-                    histogramFrame.setTitle(tab.getxName());
-                    histogramFrame.setSize(250, 250);
-                    histogramFrame.setVisible(true);
-                    histogramFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    JFrame histogramFrameXaxis = new JFrame(pathname);
+                    HistogramDrawingPanelForXaxis xPlot = new HistogramDrawingPanelForXaxis(tab);
+                    histogramFrameXaxis.add(xPlot);
+                    histogramFrameXaxis.setTitle(tab.getxName());
+                    histogramFrameXaxis.setSize(250, 250);
+                    histogramFrameXaxis.setVisible(true);
+                    histogramFrameXaxis.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+                    //Histogramm aufrufen für eine Variable
+                    JFrame histogramFrameYaxis = new JFrame(pathname);
+                    HistogramDrawingPanelForXaxis yPlot = new HistogramDrawingPanelForXaxis(tab);
+                    histogramFrameYaxis.add(xPlot);
+                    histogramFrameYaxis.setTitle(tab.getxName());
+                    histogramFrameYaxis.setSize(250, 250);
+                    histogramFrameYaxis.setVisible(true);
+                    histogramFrameYaxis.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
                     //histogramm.setVisible(true);
                 }
@@ -86,7 +95,7 @@ public class MainPanel extends JFrame {
 
                     //Histogramm aufrufen für eine Variable
                     JFrame histogramFrame = new JFrame(pathname);
-                    HistogramDrawingPanel xPlot = new HistogramDrawingPanel(lin);
+                    HistogramDrawingPanelForXaxis xPlot = new HistogramDrawingPanelForXaxis(lin);
                     histogramFrame.add(xPlot);
                     histogramFrame.setTitle(lin.getxName());
                     histogramFrame.setSize(250, 250);
