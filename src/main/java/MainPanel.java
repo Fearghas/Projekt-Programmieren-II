@@ -22,19 +22,19 @@ public class MainPanel extends JFrame {
         fileMenue = new JMenu("Datei");
         optionsOne = new JMenu("Bearbeiten");
 
-        // Menüpunkte  erzeuge
+        // MenÃ¼punkte  erzeuge
         openItem = new JMenuItem("\u00d6ffnen");
         closeItem = new JMenuItem("Schliessen");
 
-        // Menüpunkte dem Datei-Menü hinzufügen
+        // MenÃ¼punkte dem Datei-MenÃ¼ hinzufÃ¼gen
         fileMenue.add(openItem);
         fileMenue.add(closeItem);
 
-        //Datei-Menü  Menüleiste hinzufüg
+        //Datei-MenÃ¼  MenÃ¼leiste hinzufÃ¼g
         menueBar.add(fileMenue);
         menueBar.add(optionsOne);
 
-        //Menüleiste JFrame hinzufüg
+        //MenÃ¼leiste JFrame hinzufÃ¼g
         this.add(menueBar, BorderLayout.NORTH);
 
 
@@ -53,13 +53,13 @@ public class MainPanel extends JFrame {
                     ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(tab);
                     plot.setPointSize(5);   //default point size
                     scatterplotFrame.add(plot);
-                    addOptionsBar(scatterplotFrame, plot);
+                    addOptionsBar(scatterplotFrame, plot, tab);
                     scatterplotFrame.setSize(500, 500);
                     scatterplotFrame.setLocationRelativeTo(null); // center on screen
                     scatterplotFrame.setVisible(true);
                     scatterplotFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-                    //Histogramm aufrufen für eine Variable
+                    //Histogramm aufrufen fÃ¼r eine Variable
                     JFrame histogramFrameXaxis = new JFrame(pathname);
                     HistogramDrawingPanelForXaxis xPlot = new HistogramDrawingPanelForXaxis(tab);
                     histogramFrameXaxis.add(xPlot);
@@ -68,7 +68,7 @@ public class MainPanel extends JFrame {
                     histogramFrameXaxis.setVisible(true);
                     histogramFrameXaxis.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-                    //Histogramm aufrufen für eine Variable
+                    //Histogramm aufrufen fÃ¼r eine Variable
                     JFrame histogramFrameYaxis = new JFrame(pathname);
                     HistogramDrawingPanelForXaxis yPlot = new HistogramDrawingPanelForXaxis(tab);
                     histogramFrameYaxis.add(xPlot);
@@ -87,13 +87,13 @@ public class MainPanel extends JFrame {
                     ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(lin);
                     plot.setPointSize(5);   //default point size
                     scatterplotFrame.add(plot);
-                    addOptionsBar(scatterplotFrame, plot);
+                    addOptionsBar(scatterplotFrame, plot, lin);
                     scatterplotFrame.setSize(500, 500);
                     scatterplotFrame.setLocationRelativeTo(null); // center on screen
                     scatterplotFrame.setVisible(true);
                     scatterplotFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-                    //Histogramm aufrufen für eine Variable
+                    //Histogramm aufrufen fÃ¼r eine Variable
                     JFrame histogramFrame = new JFrame(pathname);
                     HistogramDrawingPanelForXaxis xPlot = new HistogramDrawingPanelForXaxis(lin);
                     histogramFrame.add(xPlot);
@@ -108,44 +108,55 @@ public class MainPanel extends JFrame {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-
         });
 
         closeItem.addActionListener(e -> {
-            //Programm schließen
+            //Programm schlieÃŸen
             System.exit(0);
         });
     }
 
-    private void addOptionsBar(JFrame frame, ScatterplotDrawingPanel area) {
+    public void addOptionsBar(JFrame frame, ScatterplotDrawingPanel area, Format format)  {
         JMenuBar optionsBar;
         JMenu optionsOne;
         JMenu optionsTwo;
         JMenu optionsThree;
+        JMenu optionsFour;
+        JMenu optionsFive;
         JMenuItem connectPoints;
         JMenuItem removePoints;
         JMenuItem one, two, three, four, five;
         JMenu pointSize;
         JMenuItem changeColor;
-
+        JMenuItem Variable1;
+        JMenuItem Variable2;
+        JMenuItem Variable3;
+        JMenuItem Variable4;
         //Initialisierung
         optionsBar = new JMenuBar();
         optionsOne = new JMenu("Dots");
         optionsTwo = new JMenu("Size");
         optionsThree = new JMenu("Color");
+        optionsFour = new JMenu("X-Axis");
+        optionsFive = new JMenu("Y-Axis");
 
-        // Menüpunkte  erzeugen
+        // MenÃ¼punkte  erzeugen
         connectPoints = new JMenuItem("Connect");
         removePoints = new JMenuItem("Unconnect");
         pointSize = new JMenu("Pixel");
         changeColor = new JMenuItem("Choose");
+        Variable1 = new JMenuItem(format.getxName());
+        Variable2 = new JMenuItem(format.getyName());
+        Variable3 = new JMenuItem(format.getxName());
+        Variable4 = new JMenuItem(format.getyName());
+
         one = new JMenuItem("2");
         two = new JMenuItem("3");
         three = new JMenuItem("5");
         four = new JMenuItem("7");
         five = new JMenuItem("10");
 
-        // Menüpunkte dem Datei-Menü hinzufügen
+        // MenÃ¼punkte dem Datei-MenÃ¼ hinzufÃ¼gen
         optionsOne.add(connectPoints);
         optionsOne.add(removePoints);
         optionsTwo.add(pointSize);
@@ -155,14 +166,19 @@ public class MainPanel extends JFrame {
         pointSize.add(four);
         pointSize.add(five);
         optionsThree.add(changeColor);
+        optionsFour.add(Variable1);
+        optionsFour.add(Variable2);
+        optionsFive.add(Variable3);
+        optionsFive.add(Variable4);
 
-
-        //Datei-Menü  Menüleiste hinzufüg
+        //Datei-MenÃ¼  MenÃ¼leiste hinzufÃ¼g
         optionsBar.add(optionsOne);
         optionsBar.add(optionsTwo);
         optionsBar.add(optionsThree);
+        optionsBar.add(optionsFour);
+        optionsBar.add(optionsFive);
 
-        //Menüleiste JFrame hinzufüg
+        //MenÃ¼leiste JFrame hinzufÃ¼g
         frame.add(optionsBar, BorderLayout.NORTH);
 
         //Listener
@@ -184,7 +200,6 @@ public class MainPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 area.setPointSize(2);
-
             }
         });
 
@@ -192,7 +207,6 @@ public class MainPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 area.setPointSize(3);
-
             }
         });
 
@@ -200,7 +214,6 @@ public class MainPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 area.setPointSize(5);
-
             }
         });
 
@@ -222,9 +235,10 @@ public class MainPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 area.setPlotColor();
-
             }
         });
     }
 }
+
+
 
