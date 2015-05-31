@@ -8,39 +8,10 @@ import java.util.Scanner;
  */
 public class TabDelimited implements Formatloader
 {
-    private Variable chooseVariableX;
-    private Variable chooseVariableY;
-
-    public Variable getChooseVariableX() {
-        return chooseVariableX;
-    }
-
-    public void setChooseVariableX(Variable chooseVariableX) {
-        this.chooseVariableX = chooseVariableX;
-    }
-
-    public Variable getChooseVariableY() {
-        return chooseVariableY;
-    }
-
-    public void setChooseVariableY(Variable chooseVariableY) {
-        this.chooseVariableY = chooseVariableY;
-    }
-
     @Override
     public Format loadformat(String fileName)
     {
-        //Container vorbereiten für Achsenname, x-Werte und y-Werte
-        ArrayList<String> beschriftung = new ArrayList<String>();
-        ArrayList<Double> ersteVariable = new ArrayList<Double>();
-        ArrayList<Double> zweiteVariable = new ArrayList<Double>();
-        ArrayList<Double> dritteVariable = new ArrayList<Double>();
-        ArrayList<Double> vierteVariable = new ArrayList<Double>();
-        ArrayList<Double> fuenfteVariable = new ArrayList<Double>();
-        ArrayList<Double> sechsteVariable = new ArrayList<Double>();
-        ArrayList<Double> siebteVariable = new ArrayList<Double>();
-        String ersterName, zweiterName, dritterName, vierterName, fuenfterName, sechsterName;
-        Variable one, two, three, four, five;
+        ArrayList<String> arrayLabel = new ArrayList<>();
 
         //Initialisierung Scanner
         Scanner fileScanner;
@@ -55,65 +26,45 @@ public class TabDelimited implements Formatloader
 
         //alle Rohdaten trennen und im Container speichern
         int variablenAnzahl = 0;
-        String [] berechnungAnzahlVariablen = fileScanner.nextLine().split("\\t");
-        for( int i = 0; i <= berechnungAnzahlVariablen.length; i++)
+        String [] numberOfVariables = fileScanner.nextLine().split("\\t");
+        for( int i = 0; i <= numberOfVariables.length; i++)
         {
             variablenAnzahl = i;
         }
 
         for (int i = 0; i < variablenAnzahl; i++)
         {
-            beschriftung.add(berechnungAnzahlVariablen[i]);
+            arrayLabel.add(numberOfVariables[i]);
+        }
+
+        ArrayList[] temporaryValuesList = new ArrayList[variablenAnzahl];
+        for (int i = 0; i < variablenAnzahl; i++)
+        {
+            temporaryValuesList[i] = new ArrayList<Double>();
         }
 
         while (fileScanner.hasNext())
         {
-            String [] value = fileScanner.nextLine().split ("\\t");
-            if (variablenAnzahl > 2)
+            String[] value = fileScanner.nextLine().split ("\\t");
+            for (int i = 0; i < variablenAnzahl; i++)
             {
-                ersteVariable.add(Double.parseDouble(value[0]));
-                zweiteVariable.add(Double.parseDouble(value[1]));
-                dritteVariable.add(Double.parseDouble(value[2]));
-                vierteVariable.add(Double.parseDouble(value[3]));
-                fuenfteVariable.add(Double.parseDouble(value[4]));
-                sechsteVariable.add(Double.parseDouble(value[5]));
-                //siebteVariable.add(Double.parseDouble(value[6])); keine Werte!
+                temporaryValuesList[i].add(Double.parseDouble(value[i]));
             }
-            else
-            {
-                ersteVariable.add(Double.parseDouble(value[0]));
-                zweiteVariable.add(Double.parseDouble(value[1]));
-            }
-
         }
-        ersterName = beschriftung.get(0);
-        zweiterName = beschriftung.get(1);
-        one = createVariable(ersterName, ersteVariable);
-        two = createVariable(zweiterName, zweiteVariable);
-        if (variablenAnzahl > 2)
+
+        ArrayList<Variable> variablesList = new ArrayList();
+        for (int i = 0; i < variablenAnzahl; i++)
         {
-            zweiterName = beschriftung.get(2);
-            dritterName = beschriftung.get(3);
-            vierterName = beschriftung.get(4);
-            fuenfterName = beschriftung.get(5);
-            //sechsterName = beschriftung.get(6);
-            three = createVariable(dritterName, dritteVariable);
-            four = createVariable(vierterName, vierteVariable);
-            five = createVariable(fuenfterName, fuenfteVariable);
-            //Variable six = createVariable(ersterName, ersteVariable);
-            //setChooseVariableX(two);
-            //setChooseVariableY(three);
+            variablesList.add(createVariable(arrayLabel.get(i), temporaryValuesList[i]));
         }
-        setChooseVariableX(one);
-        setChooseVariableY(two);
 
-        return new Format(getChooseVariableX(), getChooseVariableY());
+        return new Format(arrayLabel, variablesList);
     }
 
 
-    public Variable createVariable(String a, ArrayList<Double> b)
+    public Variable createVariable(String string, ArrayList<Double> arraylist)
     {
-        return new Variable(a, b);
+        return new Variable(string, arraylist);
     }
 
 }

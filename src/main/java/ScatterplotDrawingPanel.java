@@ -15,9 +15,12 @@ public class ScatterplotDrawingPanel extends JPanel
     private Color chooser;
     private double endpointx;
     private double endpointy;
+    private int indexVariableX = 0;
+    private int indexVariableY = 1;
     private boolean flagPoints = true;
     private boolean flagLines = false;
-
+    private String xlabel;
+    private String ylabel;
 
 
     public ScatterplotDrawingPanel(Format datenmodell)
@@ -29,16 +32,15 @@ public class ScatterplotDrawingPanel extends JPanel
     {
         super.paintComponent(g);
         //Instanzen
-        ArrayList wertex = datenmodell.getarrayx();
-        ArrayList wertey = datenmodell.getarrayy();
-        double xMaximum = datenmodell.getMaximumx();
-        double xMinimum = datenmodell.getMinimumx();
-        double yMaximum = datenmodell.getMaximumy();
-        double yMinimum = datenmodell.getMinimumy();
+
+        ArrayList arrayX = datenmodell.getListe().get(indexVariableX).getValues();
+        ArrayList arrayY = datenmodell.getListe().get(indexVariableY).getValues();
+        double xMaximum = calculateMaximum(arrayX);
+        double xMinimum = calculateMinimum(arrayX);
+        double yMaximum = calculateMaximum(arrayY);
+        double yMinimum = calculateMinimum(arrayY);
         double contentWidth;
         double contentHeight;
-        String xlabel = datenmodell.getxName();
-        String ylabel = datenmodell.getyName();
 
         //4 Bedingungen Koordinatensystem
         if (xMinimum >= 0 && yMinimum >= 0)
@@ -79,11 +81,11 @@ public class ScatterplotDrawingPanel extends JPanel
 
         if (flagPoints)
         {
-            drawPoints(wertex, wertey, g, scaleWidth, scaleHeight);
+            drawPoints(arrayX, arrayY, g, scaleWidth, scaleHeight);
         } //nur Punkte werden eingezeichnet
         if (flagLines)
         {
-            drawLines(wertex, wertey, g, scaleWidth, scaleHeight);
+            drawLines(arrayX, arrayY, g, scaleWidth, scaleHeight);
         };//nur Linien werden eingezeichnet
         g2d.setTransform(at);//y-axis wieder rückgängig gemacht, nicht notwendig
     }
@@ -178,5 +180,54 @@ public class ScatterplotDrawingPanel extends JPanel
         //return chooser;
     }
 
+    //Index setzen für mehrere Variablen
+    public void setIndexVariableX(int indexNumber)
+    {
+        indexVariableX = indexNumber;
+        repaint();
+    }
+
+    public void setIndexVariableY(int indexNumber)
+    {
+        indexVariableY = indexNumber;
+        repaint();
+    }
+
+    public double calculateMaximum(ArrayList<Double> axis)
+    {
+        double maximum = axis.get(0);
+        for (int i = 0; i < axis.size(); i++)
+        {
+            if (axis.get(i) > maximum)
+            {
+                maximum = axis.get(i);
+            }
+        }
+        return maximum;
+    }
+
+    public double calculateMinimum(ArrayList<Double> axis)
+    {
+        double minimum = axis.get(0);
+        for (int i = 0; i < axis.size(); i++)
+        {
+            if (axis.get(i) < minimum) {
+                minimum = axis.get(i);
+            }
+        }
+        return minimum;
+    }
+
+    public String getXlabel()
+    {
+        xlabel = datenmodell.getListe().get(indexVariableX).getName();
+        return xlabel;
+    }
+
+    public String getYlabel()
+    {
+        ylabel = datenmodell.getListe().get(indexVariableY).getName();
+        return ylabel;
+    }
 }
 

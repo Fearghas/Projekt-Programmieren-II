@@ -9,36 +9,13 @@ import java.util.Scanner;
  */
 public class RowDelimited implements Formatloader
 {
-    private Variable chooseVariableX;
-    private Variable chooseVariableY;
-
-    public Variable getChooseVariableX() {
-        return chooseVariableX;
-    }
-
-    public void setChooseVariableX(Variable chooseVariableX) {
-        this.chooseVariableX = chooseVariableX;
-    }
-
-    public Variable getChooseVariableY() {
-        return chooseVariableY;
-    }
-
-    public void setChooseVariableY(Variable chooseVariableY) {
-        this.chooseVariableY = chooseVariableY;
-    }
-
     @Override
     public Format loadformat(String fileName)
     {
         //Container vorbereiten für Achsenname, x-Werte und y-Werte
-        ArrayList<String> beschriftung = new ArrayList<String>();
-        ArrayList<Double> ersteVariable = new ArrayList<Double>();
-        ArrayList<Double> zweiteVariable = new ArrayList<Double>();
-        String ersterName, zweiterName;
-        Variable one, two;
+        ArrayList<String> arrayLabel = new ArrayList<String>();
 
-        //Initialisierung Scanner
+       //Initialisierung Scanner
         Scanner fileScanner;
         try
         {
@@ -55,34 +32,41 @@ public class RowDelimited implements Formatloader
 
         for (int i = 0; i < variablenAnzahl; i++)
         {
-            String berechnungAnzahlVariablen = fileScanner.nextLine();
-            beschriftung.add(berechnungAnzahlVariablen);
+            String numberOfVariables = fileScanner.nextLine();
+            arrayLabel.add(numberOfVariables);
+        }
+        System.out.println("Anzahl Variablen: " + variablenAnzahl);
+
+        ArrayList[] temporaryValuesList = new ArrayList[variablenAnzahl];
+        for (int i = 0; i < variablenAnzahl; i++)
+        {
+            temporaryValuesList[i] = new ArrayList<Double>();
         }
 
         //get delimiter character
         String delimiter = fileScanner.nextLine();
 
         //scan values and store in array
-        String [] value = fileScanner.nextLine().split(delimiter);
-        for (int i = 0; i < value.length; i++)
+
+        while (fileScanner.hasNextLine())
         {
-            ersteVariable.add(Double.parseDouble(value[i]));
+            for (int a = 0; a < variablenAnzahl; a++)
+            {
+                String[] value = fileScanner.nextLine().split(delimiter);
+                for (int i = 0; i < value.length; i++)
+                {
+                    temporaryValuesList[a].add(Double.parseDouble(value[i]));
+                }
+            }
         }
 
-        String [] value2 = fileScanner.nextLine().split(delimiter);
-        for (int i = 0; i < value.length; i++)
+        ArrayList<Variable> variablesList = new ArrayList();
+        for (int i = 0; i < variablenAnzahl; i++)
         {
-            zweiteVariable.add(Double.parseDouble(value2[i]));
+            variablesList.add(createVariable(arrayLabel.get(i), temporaryValuesList[i]));
         }
-        ersterName = beschriftung.get(0);
-        zweiterName = beschriftung.get(1);
-        one = createVariable(ersterName, ersteVariable);
-        two = createVariable(zweiterName, zweiteVariable);
 
-        setChooseVariableX(one);
-        setChooseVariableY(two);
-
-        return new Format(getChooseVariableX(), getChooseVariableY());
+        return new Format(arrayLabel, variablesList);
 
     }
     public Variable createVariable(String a, ArrayList<Double> b)
