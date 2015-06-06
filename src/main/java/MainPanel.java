@@ -2,9 +2,9 @@ import drawing.HistogramDrawingPanelForXaxis;
 import drawing.HistogramDrawingPanelForYaxis;
 import drawing.ScatterplotDrawingPanel;
 import loadformat.Format;
-import loadformat.Formatloader;
-import loadformat.RowDelimited;
-import loadformat.TabDelimited;
+import loadformat.FormatReader;
+import loadformat.RowFormatScanner;
+import loadformat.TabFormatScanner;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,26 +17,21 @@ import javax.swing.*;
 public class MainPanel extends JFrame
 {
 
-    JMenuBar menueBar;
-    JMenu fileMenue;
-    JMenu optionsOne;
-    JMenuItem openItem;
-    JMenuItem closeItem;
+
     JFrame histogramFrameXaxis;
     JFrame histogramFrameYaxis;
 
 
-    protected MainPanel() {
+    public void createMainPanel() {
         this.setTitle("Scattergramm und Histogramm Applikation");
         this.setSize(200, 200);
 
-        menueBar = new JMenuBar();
-        fileMenue = new JMenu("Datei");
-        optionsOne = new JMenu("Bearbeiten");
+       JMenuBar menueBar = new JMenuBar();
+        JMenu fileMenue = new JMenu("Datei");
 
         // Menüpunkte  erzeuge
-        openItem = new JMenuItem("\u00d6ffnen");
-        closeItem = new JMenuItem("Schliessen");
+        JMenuItem openItem = new JMenuItem("\u00d6ffnen");
+        JMenuItem closeItem = new JMenuItem("Schliessen");
 
         // Menüpunkte dem Datei-Menü hinzufügen
         fileMenue.add(openItem);
@@ -44,7 +39,6 @@ public class MainPanel extends JFrame
 
         //Datei-Menü  Menüleiste hinzufüg
         menueBar.add(fileMenue);
-        menueBar.add(optionsOne);
 
         //Menüleiste JFrame hinzufüg
         this.add(menueBar, BorderLayout.NORTH);
@@ -58,8 +52,8 @@ public class MainPanel extends JFrame
             try {
                 String pathname = file.getCanonicalPath();
                 if (pathname.contains("txt")) {
-                    Formatloader loader = new TabDelimited();//Loader, der benutzt wird
-                    Format tab = loader.loadformat(pathname);//Loader, der benutzt wird auf File benutzt
+                    FormatReader loader = new TabFormatScanner();//Loader, der benutzt wird
+                    Format tab = loader.loadFormat(pathname);//Loader, der benutzt wird auf File benutzt
                     JFrame scatterplotFrame = new JFrame(pathname);
                     ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(tab);
                     HistogramDrawingPanelForXaxis xPlot = new HistogramDrawingPanelForXaxis(tab);
@@ -83,10 +77,9 @@ public class MainPanel extends JFrame
                     histogramFrameYaxis.setSize(250, 250);
                     histogramFrameYaxis.setVisible(true);
                     histogramFrameYaxis.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                }
-                    else if (pathname.contains("lin")) {
-                    Formatloader loader = new RowDelimited();
-                    Format lin = loader.loadformat(pathname);
+                } else if (pathname.contains("lin")) {
+                    FormatReader loader = new RowFormatScanner();
+                    Format lin = loader.loadFormat(pathname);
                     JFrame scatterplotFrame = new JFrame(pathname);
                     ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(lin);
                     HistogramDrawingPanelForXaxis xPlot = new HistogramDrawingPanelForXaxis(lin);
@@ -110,8 +103,7 @@ public class MainPanel extends JFrame
                     histogramFrameYaxis.setSize(250, 250);
                     histogramFrameYaxis.setVisible(true);
                     histogramFrameYaxis.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                }
-                else {
+                } else {
                     System.out.println("Oh, oh... File is not supported!");
                 }
 
