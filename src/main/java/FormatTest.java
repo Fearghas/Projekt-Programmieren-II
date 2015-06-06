@@ -13,5 +13,7 @@ public class FormatTest
 
     {
         MainPanel mainPanel = new MainPanel();
+        mainPanel.createMainPanel();
+
         mainPanel.setVisible(true);
 }}
