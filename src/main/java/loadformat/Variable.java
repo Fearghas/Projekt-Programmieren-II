@@ -1,10 +1,6 @@
 package loadformat;
-
 import java.util.ArrayList;
 
-/**
- * Created by Briareus on 25.05.2015.
- */
 public class Variable
 {
     private String name;
