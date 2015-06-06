@@ -1,14 +1,16 @@
+package drawing;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
+import loadformat.*;
 
 /**
  * Created by Briareus on 25.05.2015.
  */
 public class HistogramDrawingPanelForXaxis extends JPanel
 {
-    private final Format datenmodell; //Übernahme von Format Klasse; muss nicht Bezeichnung datenmodell haben
+    private final Format datenmodell; //Übernahme von loadformat.Format Klasse; muss nicht Bezeichnung datenmodell haben
     private String line;
     private int indexVariableX = 0;
     private int indexVariableY = 1;
@@ -29,7 +31,7 @@ public class HistogramDrawingPanelForXaxis extends JPanel
         double xMinimum = calculateMinimum(arrayX);
         double contentHeight;
         int totalValues = getTotalValues(arrayX);
-        setXlabel(xlabel = datenmodell.getListe().get(indexVariableX).getName());
+        //setXlabel(xlabel = datenmodell.getListe().get(indexVariableX).getName());
 
         //ylabel = datenmodell.getListe().get(indexVariableY).getName();
         int howManyBins;
@@ -67,7 +69,7 @@ public class HistogramDrawingPanelForXaxis extends JPanel
             upperLimitInterval = xMinimum + modulus;
         }
 
-        //Test Histogramm mit einer Variable
+        //Test Histogramm mit einer loadformat.Variable
         int barWidth = getWidth() / howManyBins;
         contentHeight = calculateMaximum(arrayFrequency) + calculateMinimum(arrayFrequency);
         for (int i = 0; i < arrayFrequency.size(); i++)
@@ -133,14 +135,19 @@ public class HistogramDrawingPanelForXaxis extends JPanel
         return anzahl;
     }
 
-    public void setXlabel(String test)
+
+
+    public String getXlabel(int indexNumber)
     {
-        xlabel = test;
+        indexVariableX = indexNumber;
+        String xlabel = datenmodell.getListe().get(indexVariableX).getName();
+        return xlabel;
     }
 
-    public String getXlabel()
+    public String getYlabel()
     {
-        return xlabel;
+        String ylabel = datenmodell.getListe().get(indexVariableY).getName();
+        return ylabel;
     }
 }
 

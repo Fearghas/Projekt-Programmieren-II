@@ -1,3 +1,7 @@
+package loadformat;
+
+import loadformat.Variable;
+
 import java.util.ArrayList;
 
 /**

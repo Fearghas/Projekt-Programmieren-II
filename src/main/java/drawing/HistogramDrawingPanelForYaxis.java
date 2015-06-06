@@ -1,13 +1,16 @@
+package drawing;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import loadformat.*;
 
 /**
  * Created by Briareus on 25.05.2015.
  */
 public class HistogramDrawingPanelForYaxis extends JPanel
 {
-    private final Format datenmodell; //Übernahme von Format Klasse; muss nicht Bezeichnung datenmodell haben
+    private final Format datenmodell; //Übernahme von loadformat.Format Klasse; muss nicht Bezeichnung datenmodell haben
     private String line;
     private int indexVariableX = 0;
     private int indexVariableY = 1;
@@ -28,7 +31,7 @@ public class HistogramDrawingPanelForYaxis extends JPanel
         double yMinimum = calculateMinimum(arrayY);
         double contentHeight;
         int totalValues = getTotalValues(arrayY);
-        setYlabel(ylabel = datenmodell.getListe().get(indexVariableY).getName());
+        //setYlabel(ylabel = datenmodell.getListe().get(indexVariableY).getName());
 
         //ylabel = datenmodell.getListe().get(indexVariableY).getName();
         int howManyBins;
@@ -66,7 +69,7 @@ public class HistogramDrawingPanelForYaxis extends JPanel
             upperLimitInterval = yMinimum + modulus;
         }
 
-        //Test Histogramm mit einer Variable
+        //Test Histogramm mit einer loadformat.Variable
         int barWidth = getWidth() / howManyBins;
         contentHeight = calculateMaximum(arrayFrequency) + calculateMinimum(arrayFrequency);
         for (int i = 0; i < arrayFrequency.size(); i++)
@@ -132,14 +135,17 @@ public class HistogramDrawingPanelForYaxis extends JPanel
         return anzahl;
     }
 
-    public void setYlabel(String test)
+    public String getYlabel(int indexNumber)
     {
-        xlabel = test;
+        indexVariableY = indexNumber;
+        String ylabel = datenmodell.getListe().get(indexVariableY).getName();
+        return ylabel;
     }
 
     public String getYlabel()
     {
-        return xlabel;
+        String ylabel = datenmodell.getListe().get(indexVariableY).getName();
+        return ylabel;
     }
 }
 

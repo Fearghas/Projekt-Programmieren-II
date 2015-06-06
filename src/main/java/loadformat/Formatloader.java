@@ -1,3 +1,5 @@
+package loadformat;
+
 /**
  * Created by Briareus on 15/05/2015.
  */

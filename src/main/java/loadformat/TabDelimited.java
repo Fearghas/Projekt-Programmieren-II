@@ -1,11 +1,17 @@
+package loadformat;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+
 /**
  * Created by Briareus on 15/05/2015.
  */
+
+
 public class TabDelimited implements Formatloader
 {
     @Override
@@ -58,6 +64,7 @@ public class TabDelimited implements Formatloader
             variablesList.add(createVariable(arrayLabel.get(i), temporaryValuesList[i]));
         }
 
+        System.out.println(temporaryValuesList[0].size());
         return new Format(arrayLabel, variablesList);
     }
 

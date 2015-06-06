@@ -1,3 +1,11 @@
+import drawing.HistogramDrawingPanelForXaxis;
+import drawing.HistogramDrawingPanelForYaxis;
+import drawing.ScatterplotDrawingPanel;
+import loadformat.Format;
+import loadformat.Formatloader;
+import loadformat.RowDelimited;
+import loadformat.TabDelimited;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,19 +16,44 @@ import javax.swing.*;
 
 public class MainPanel extends JFrame
 {
+
     JMenuBar menueBar;
     JMenu fileMenue;
     JMenu optionsOne;
     JMenuItem openItem;
     JMenuItem closeItem;
+    JFrame histogramFrameXaxis;
+    JFrame histogramFrameYaxis;
+
 
     protected MainPanel() {
-        MainPanelOptions();
+        this.setTitle("Scattergramm und Histogramm Applikation");
+        this.setSize(200, 200);
+
+        menueBar = new JMenuBar();
+        fileMenue = new JMenu("Datei");
+        optionsOne = new JMenu("Bearbeiten");
+
+        // Menüpunkte  erzeuge
+        openItem = new JMenuItem("\u00d6ffnen");
+        closeItem = new JMenuItem("Schliessen");
+
+        // Menüpunkte dem Datei-Menü hinzufügen
+        fileMenue.add(openItem);
+        fileMenue.add(closeItem);
+
+        //Datei-Menü  Menüleiste hinzufüg
+        menueBar.add(fileMenue);
+        menueBar.add(optionsOne);
+
+        //Menüleiste JFrame hinzufüg
+        this.add(menueBar, BorderLayout.NORTH);
+
 
         openItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));  // Dialog zum Oeffnen von Dateien anzeigen
-            fileChooser.showOpenDialog(null);
+            int returnValue = fileChooser.showOpenDialog(null);
             File file = fileChooser.getSelectedFile();
             try {
                 String pathname = file.getCanonicalPath();
@@ -29,14 +62,54 @@ public class MainPanel extends JFrame
                     Format tab = loader.loadformat(pathname);//Loader, der benutzt wird auf File benutzt
                     JFrame scatterplotFrame = new JFrame(pathname);
                     ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(tab);
-                    HistogramDrawingPanel(tab, scatterplotFrame, plot);
+                    HistogramDrawingPanelForXaxis xPlot = new HistogramDrawingPanelForXaxis(tab);
+                    HistogramDrawingPanelForYaxis yPlot = new HistogramDrawingPanelForYaxis(tab);
+                    plot.setPointSize(3);//default point size
+                    scatterplotFrame.add(plot);
+                    addOptionsBar(scatterplotFrame, plot, xPlot, yPlot, tab.getLabel(), tab);
+                    scatterplotFrame.setSize(500, 500);
+                    scatterplotFrame.setLocationRelativeTo(null); // center on screen
+                    scatterplotFrame.setVisible(true);
+                    scatterplotFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    histogramFrameXaxis = new JFrame();
+                    histogramFrameYaxis = new JFrame();
+                    histogramFrameXaxis.add(xPlot);
+                    histogramFrameYaxis.add(yPlot);
+                    histogramFrameXaxis.setTitle(xPlot.getXlabel(0));
+                    histogramFrameYaxis.setTitle(yPlot.getYlabel(1));
+                    histogramFrameXaxis.setSize(250, 250);
+                    histogramFrameXaxis.setVisible(true);
+                    histogramFrameXaxis.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    histogramFrameYaxis.setSize(250, 250);
+                    histogramFrameYaxis.setVisible(true);
+                    histogramFrameYaxis.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                 }
-                else if (pathname.contains("lin")) {
+                    else if (pathname.contains("lin")) {
                     Formatloader loader = new RowDelimited();
                     Format lin = loader.loadformat(pathname);
                     JFrame scatterplotFrame = new JFrame(pathname);
                     ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(lin);
-                    HistogramDrawingPanel(lin, scatterplotFrame, plot);
+                    HistogramDrawingPanelForXaxis xPlot = new HistogramDrawingPanelForXaxis(lin);
+                    HistogramDrawingPanelForYaxis yPlot = new HistogramDrawingPanelForYaxis(lin);
+                    plot.setPointSize(3);   //default point size
+                    scatterplotFrame.add(plot);
+                    addOptionsBar(scatterplotFrame, plot, xPlot, yPlot, lin.getLabel(), lin);
+                    scatterplotFrame.setSize(500, 500);
+                    scatterplotFrame.setLocationRelativeTo(null); // center on screen
+                    scatterplotFrame.setVisible(true);
+                    scatterplotFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    histogramFrameXaxis = new JFrame();
+                    histogramFrameYaxis = new JFrame();
+                    histogramFrameXaxis.add(xPlot);
+                    histogramFrameYaxis.add(yPlot);
+                    histogramFrameXaxis.setTitle(xPlot.getXlabel(0));
+                    histogramFrameYaxis.setTitle(yPlot.getYlabel(1));
+                    histogramFrameXaxis.setSize(250, 250);
+                    histogramFrameXaxis.setVisible(true);
+                    histogramFrameXaxis.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    histogramFrameYaxis.setSize(250, 250);
+                    histogramFrameYaxis.setVisible(true);
+                    histogramFrameYaxis.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                 }
                 else {
                     System.out.println("Oh, oh... File is not supported!");
@@ -45,48 +118,13 @@ public class MainPanel extends JFrame
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+
         });
 
         closeItem.addActionListener(e -> {
-            //Programm schlieÃŸen
+            //Programm schließen
             System.exit(0);
         });
-    }
-
-    private void MainPanelOptions() {
-        this.setTitle("Scattergramm und Histogramm Applikation");
-        this.setSize(200, 200);
-        menueBar = new JMenuBar();
-        fileMenue = new JMenu("Datei");
-        openItem = new JMenuItem("\u00d6ffnen");
-        closeItem = new JMenuItem("Schliessen");
-        fileMenue.add(openItem);
-        fileMenue.add(closeItem);
-        menueBar.add(fileMenue);
-        this.add(menueBar, BorderLayout.NORTH);
-    }
-
-    private void HistogramDrawingPanel(Format tab, JFrame scatterplotFrame, ScatterplotDrawingPanel plot) {
-        HistogramDrawingPanelForXaxis xPlot = new HistogramDrawingPanelForXaxis(tab);
-        HistogramDrawingPanelForYaxis yPlot = new HistogramDrawingPanelForYaxis(tab);
-        plot.setPointSize(3);//default point size
-        scatterplotFrame.add(plot);
-        addOptionsBar(scatterplotFrame, plot, xPlot, yPlot, tab.getLabel(), tab);
-        scatterplotFrame.setSize(500, 500);
-        scatterplotFrame.setLocationRelativeTo(null); // center on screen
-        scatterplotFrame.setVisible(true);
-        scatterplotFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        JFrame histogramFrameXaxis = new JFrame();
-        JFrame histogramFrameYaxis = new JFrame();
-        histogramFrameXaxis.add(xPlot);
-        histogramFrameYaxis.add(yPlot);
-        histogramFrameYaxis.setTitle("under construction");
-        histogramFrameXaxis.setSize(250, 250);
-        histogramFrameXaxis.setVisible(true);
-        histogramFrameXaxis.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        histogramFrameYaxis.setSize(250, 250);
-        histogramFrameYaxis.setVisible(true);
-        histogramFrameYaxis.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void addOptionsBar(JFrame frame, ScatterplotDrawingPanel area, HistogramDrawingPanelForXaxis area2, HistogramDrawingPanelForYaxis area3, ArrayList<String> label, Format format)
@@ -100,8 +138,8 @@ public class MainPanel extends JFrame
         JMenuItem removePoints;
         JMenuItem one, two, three, four, five;
         JMenuItem changeColor;
-        JComboBox<String> xAxis;
-        JComboBox<String> yAxis;
+        JComboBox xAxis;
+        JComboBox yAxis;
 
         //Initialisierung
         optionsBar = new JMenuBar();
@@ -112,9 +150,9 @@ public class MainPanel extends JFrame
         //Combobox
         String[] box = label.toArray(new String[label.size()]);
 
-        xAxis = new JComboBox<String>(box);
+        xAxis = new JComboBox(box);
         xAxis.setSelectedIndex(0);
-        yAxis = new JComboBox<String>(box);
+        yAxis = new JComboBox(box);
         yAxis.setSelectedIndex(1);
 
         //Combobox Actionlistener
@@ -127,6 +165,7 @@ public class MainPanel extends JFrame
                 area.setIndexVariableX(indexComboBox);
                 area2.setIndexVariableX(indexComboBox);
                 area3.setIndexVariableX(indexComboBox);
+                histogramFrameXaxis.setTitle(area2.getXlabel(indexComboBox));
             }
         });
 
@@ -139,10 +178,11 @@ public class MainPanel extends JFrame
                 area.setIndexVariableY(indexComboBox);
                 area2.setIndexVariableY(indexComboBox);
                 area3.setIndexVariableY(indexComboBox);
+                histogramFrameYaxis.setTitle(area3.getYlabel(indexComboBox));
             }
         });
 
-        // MenÃ¼punkte  erzeugen
+        // Menüpunkte  erzeugen
         connectPoints = new JMenuItem("Connect");
         removePoints = new JMenuItem("Unconnect");
         pointSize = new JMenu("Pixel");
@@ -153,7 +193,7 @@ public class MainPanel extends JFrame
         four = new JMenuItem("7");
         five = new JMenuItem("10");
 
-        // MenÃ¼punkte dem Datei-MenÃ¼ hinzufÃ¼gen
+        // Menüpunkte dem Datei-Menü hinzufügen
         optionsOne.add(connectPoints);
         optionsOne.add(removePoints);
         optionsTwo.add(pointSize);
@@ -164,14 +204,14 @@ public class MainPanel extends JFrame
         pointSize.add(five);
         optionsThree.add(changeColor);
 
-        //Datei-MenÃ¼  MenÃ¼leiste hinzufÃ¼g
+        //Datei-Menü  Menüleiste hinzufüg
         optionsBar.add(optionsOne);
         optionsBar.add(optionsTwo);
         optionsBar.add(optionsThree);
         optionsBar.add(xAxis);
-        optionsBar.add(yAxis);  //Combobox nicht als MenÃ¼item behandeln!! Actionlistener funktioniert nicht...
+        optionsBar.add(yAxis);  //Combobox nicht als Menüitem behandeln!! Actionlistener funktioniert nicht...
 
-        //MenÃ¼leiste JFrame hinzufÃ¼g
+        //Menüleiste JFrame hinzufüg
         frame.add(optionsBar, BorderLayout.NORTH);
 
         //Listener
@@ -239,3 +279,4 @@ public class MainPanel extends JFrame
 
     }
 }
+

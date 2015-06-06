@@ -1,4 +1,7 @@
-import javax.swing.*;
+package loadformat;
+
+import loadformat.Formatloader;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -35,7 +38,6 @@ public class RowDelimited implements Formatloader
             String numberOfVariables = fileScanner.nextLine();
             arrayLabel.add(numberOfVariables);
         }
-        System.out.println("Anzahl Variablen: " + variablenAnzahl);
 
         ArrayList[] temporaryValuesList = new ArrayList[variablenAnzahl];
         for (int i = 0; i < variablenAnzahl; i++)
@@ -66,6 +68,7 @@ public class RowDelimited implements Formatloader
             variablesList.add(createVariable(arrayLabel.get(i), temporaryValuesList[i]));
         }
 
+        System.out.println(temporaryValuesList[0].size());
         return new Format(arrayLabel, variablesList);
 
     }
