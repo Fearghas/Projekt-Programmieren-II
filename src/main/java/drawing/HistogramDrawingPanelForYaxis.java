@@ -85,9 +85,9 @@ public class HistogramDrawingPanelForYAxis extends JPanel
     public double calculateMaximum(ArrayList<Double> axis)
     {
         double maximum = axis.get(0);
-        for (Double axisSize : axis) {
-            if (axisSize > maximum) {
-                maximum = axisSize;
+        for (Double axisItem : axis) {
+            if (axisItem > maximum) {
+                maximum = axisItem;
             }
         }
         return maximum;
@@ -96,9 +96,9 @@ public class HistogramDrawingPanelForYAxis extends JPanel
     public double calculateMinimum(ArrayList<Double> axis)
     {
         double minimum = axis.get(0);
-        for (Double axisSize : axis) {
-            if (axisSize < minimum) {
-                minimum = axisSize;
+        for (Double axisItem : axis) {
+            if (axisItem < minimum) {
+                minimum = axisItem;
             }
         }
         return minimum;
@@ -113,5 +113,5 @@ public class HistogramDrawingPanelForYAxis extends JPanel
         }
         return count;
     }
-    
+
 }
