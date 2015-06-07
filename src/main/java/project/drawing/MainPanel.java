@@ -41,7 +41,7 @@ public class MainPanel extends JFrame
                     FormatReader loader = new TabFormatScanner();
                     Storage tab = loader.readFormat(pathname);
                     JFrame scatterPlotFrame = new JFrame(pathname);
-                    ScatterPlotDrawingPanel plot = new ScatterPlotDrawingPanel(tab);
+                    ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(tab);
                     createScatterPlot(defaultPointSize, scatterPlotFrame, plot);
                     histogramFrameAxisX = new JFrame();
                     HistogramDrawingPanelAxisX xPlot = new HistogramDrawingPanelAxisX(tab);
@@ -54,7 +54,7 @@ public class MainPanel extends JFrame
                     FormatReader loader = new RowFormatScanner();
                     Storage lin = loader.readFormat(pathname);
                     JFrame scatterPlotFrame = new JFrame(pathname);
-                    ScatterPlotDrawingPanel plot = new ScatterPlotDrawingPanel(lin);
+                    ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(lin);
                     createScatterPlot(defaultPointSize, scatterPlotFrame, plot);
                     histogramFrameAxisX = new JFrame();
                     HistogramDrawingPanelAxisX xPlot = new HistogramDrawingPanelAxisX(lin);
@@ -96,7 +96,7 @@ public class MainPanel extends JFrame
         histogramFrameAxisX.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    private void createScatterPlot(int defaultPointSize, JFrame scatterplotFrame, ScatterPlotDrawingPanel plot) {
+    private void createScatterPlot(int defaultPointSize, JFrame scatterplotFrame, ScatterplotDrawingPanel plot) {
         plot.setPointSize(defaultPointSize);
         scatterplotFrame.add(plot);
         scatterplotFrame.setSize(500, 500);
@@ -113,7 +113,7 @@ public class MainPanel extends JFrame
         menuBar.add(fileMenuTwo);
     }
 
-    private void addOptionsBar(JFrame frame, ScatterPlotDrawingPanel plot,
+    private void addOptionsBar(JFrame frame, ScatterplotDrawingPanel plot,
                                HistogramDrawingPanelAxisX histogramX, HistogramDrawingPanelAxisY histogramY,
                                ArrayList<String> label, Storage data) {
         JMenuBar optionsBar;
