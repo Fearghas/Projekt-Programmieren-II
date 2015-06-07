@@ -1,4 +1,5 @@
 package project.drawing;
+
 import project.processing.Storage;
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 public class ScatterplotDrawingPanel extends JPanel {
     private final Storage data;
-    private static int pointSize;
+    private int pointSize;
     private Color chooser;
     private double endpointX;
     private double endpointY;
@@ -22,76 +23,75 @@ public class ScatterplotDrawingPanel extends JPanel {
         this.data = data;
     }
 
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
 
         ArrayList arrayX = data.getValuesOfVariable().get(indexVariableX).getValues();
         ArrayList arrayY = data.getValuesOfVariable().get(indexVariableY).getValues();
-        double xMaximum = calculateMaximum(arrayX);
-        double xMinimum = calculateMinimum(arrayX);
-        double yMaximum = calculateMaximum(arrayY);
-        double yMinimum = calculateMinimum(arrayY);
-        double contentWidth;
-        double contentHeight;
-        double SPACE_TO_SHOW_EXTREME_VALUE = 1.0;
+        double xMaximum = data.calculateMaximum(arrayX);
+        double xMinimum = data.calculateMinimum(arrayX);
+        double yMaximum = data.calculateMaximum(arrayY);
+        double yMinimum = data.calculateMinimum(arrayY);
+        double contentWidth, contentHeight;
+        final double ADD_SPACE_NEAR_BORDER = 1.0;
 
         if (xMinimum >= 0 && yMinimum >= 0) {
-            contentWidth = (xMaximum + SPACE_TO_SHOW_EXTREME_VALUE) - (xMinimum - SPACE_TO_SHOW_EXTREME_VALUE);
-            contentHeight = (yMaximum + SPACE_TO_SHOW_EXTREME_VALUE) - (yMinimum - SPACE_TO_SHOW_EXTREME_VALUE);
+            contentWidth = (xMaximum + ADD_SPACE_NEAR_BORDER) - (xMinimum - ADD_SPACE_NEAR_BORDER);
+            contentHeight = (yMaximum + ADD_SPACE_NEAR_BORDER) - (yMinimum - ADD_SPACE_NEAR_BORDER);
 
         } else if (xMinimum < 1 && yMinimum >= 0) {
 
-            contentWidth = (xMaximum + SPACE_TO_SHOW_EXTREME_VALUE) - (xMinimum + SPACE_TO_SHOW_EXTREME_VALUE);
-            contentHeight = (yMaximum + SPACE_TO_SHOW_EXTREME_VALUE) - (yMinimum + SPACE_TO_SHOW_EXTREME_VALUE);
+            contentWidth = (xMaximum + ADD_SPACE_NEAR_BORDER) - (xMinimum + ADD_SPACE_NEAR_BORDER);
+            contentHeight = (yMaximum + ADD_SPACE_NEAR_BORDER) - (yMinimum + ADD_SPACE_NEAR_BORDER);
 
         } else if (xMinimum >= 0 && yMinimum < 1) {
 
-            contentWidth = (xMaximum + SPACE_TO_SHOW_EXTREME_VALUE) - (xMinimum - SPACE_TO_SHOW_EXTREME_VALUE);
-            contentHeight = (yMaximum + SPACE_TO_SHOW_EXTREME_VALUE) - (yMinimum - SPACE_TO_SHOW_EXTREME_VALUE);
+            contentWidth = (xMaximum + ADD_SPACE_NEAR_BORDER) - (xMinimum - ADD_SPACE_NEAR_BORDER);
+            contentHeight = (yMaximum + ADD_SPACE_NEAR_BORDER) - (yMinimum - ADD_SPACE_NEAR_BORDER);
             xMinimum = 0;
         } else {
 
-            contentWidth = (xMaximum + SPACE_TO_SHOW_EXTREME_VALUE) - (xMinimum - SPACE_TO_SHOW_EXTREME_VALUE);
-            contentHeight = (yMaximum + SPACE_TO_SHOW_EXTREME_VALUE) - (yMinimum - SPACE_TO_SHOW_EXTREME_VALUE);
+            contentWidth = (xMaximum + ADD_SPACE_NEAR_BORDER) - (xMinimum - ADD_SPACE_NEAR_BORDER);
+            contentHeight = (yMaximum + ADD_SPACE_NEAR_BORDER) - (yMinimum - ADD_SPACE_NEAR_BORDER);
         }
 
-        final double scaleWidth = getWidth() / contentWidth;
-        final double scaleHeight = getHeight() / contentHeight;
-        Graphics2D g2d = (Graphics2D) g;
-        AffineTransform transform = g2d.getTransform();
-        g2d.translate(0 - scaleWidth * (xMinimum - SPACE_TO_SHOW_EXTREME_VALUE),
-                scaleHeight * (yMaximum + SPACE_TO_SHOW_EXTREME_VALUE));
-        g2d.scale(1, -1);
+        double scaleWidth = getWidth() / contentWidth;
+        double scaleHeight = getHeight() / contentHeight;
+        Graphics2D axis = (Graphics2D) graphics;
+        AffineTransform transform = axis.getTransform();
+        axis.translate(0 - scaleWidth * (xMinimum - ADD_SPACE_NEAR_BORDER),
+                scaleHeight * (yMaximum + ADD_SPACE_NEAR_BORDER));
+        axis.scale(1, -1);
         if (flagPoints) {
-            drawPoints(arrayX, arrayY, g, scaleWidth, scaleHeight);
+            drawPoints(arrayX, arrayY, graphics, scaleWidth, scaleHeight);
         }
         if (flagLines) {
-            drawLines(arrayX, arrayY, g, scaleWidth, scaleHeight);
+            drawLines(arrayX, arrayY, graphics, scaleWidth, scaleHeight);
         }
-        g2d.setTransform(transform);
+        axis.setTransform(transform);
     }
 
-    public void drawPoints(ArrayList<Double> xValues, ArrayList<Double> yValues, Graphics g, double scaleWidth, double scaleHeight) {
+    public void drawPoints(ArrayList<Double> xValues, ArrayList<Double> yValues,
+                           Graphics points, double scaleWidth, double scaleHeight) {
 
         for (int i = 0; i < xValues.size(); i++) {
             double getX = xValues.get(i);
             double getY = yValues.get(i);
-
             int x = (int) (getX * scaleWidth);
             int y = (int) (getY * scaleHeight);
 
-            g.setColor(chooser);
-            g.fillOval(x, y, getPointSize(), getPointSize());
+            points.setColor(chooser);
+            points.fillOval(x, y, getPointSize(), getPointSize());
         }
     }
 
-    public void drawLines(ArrayList<Double> xValues, ArrayList<Double> yValues, Graphics g,
+    public void drawLines(ArrayList<Double> xValues, ArrayList<Double> yValues, Graphics points,
                           double scaleWidth, double scaleHeight) {
         for (int i = 0; i < xValues.size(); i++) {
             double getX = xValues.get(i);
             double getY = yValues.get(i);
             int OFFSET = 1;
-            int CORRECTION = 2;
+            int CORRECTION_TO_MIDDLE = 2;
             if (i == xValues.size() - OFFSET) {
 
             } else {
@@ -102,10 +102,11 @@ public class ScatterplotDrawingPanel extends JPanel {
             int y = (int) (getY * scaleHeight);
             int nextPointX = (int) (endpointX * scaleWidth);
             int nextPointY = (int) (endpointY * scaleHeight);
-            int correctionX = getPointSize() / CORRECTION;
-            int correctionY = getPointSize() / CORRECTION;
-            g.setColor(Color.red);
-            g.drawLine(x + correctionX, y + correctionY, nextPointX + correctionX, nextPointY + correctionY);
+            int correctionX = getPointSize() / CORRECTION_TO_MIDDLE;
+            int correctionY = getPointSize() / CORRECTION_TO_MIDDLE;
+
+            points.setColor(Color.red);
+            points.drawLine(x + correctionX, y + correctionY, nextPointX + correctionX, nextPointY + correctionY);
         }
     }
 
@@ -149,26 +150,6 @@ public class ScatterplotDrawingPanel extends JPanel {
     public void setIndexVariableY(int indexNumber) {
         indexVariableY = indexNumber;
         repaint();
-    }
-
-    public double calculateMaximum(ArrayList<Double> axis) {
-        double maximum = axis.get(0);
-        for (int i = 0; i < axis.size(); i++) {
-            if (axis.get(i) > maximum) {
-                maximum = axis.get(i);
-            }
-        }
-        return maximum;
-    }
-
-    public double calculateMinimum(ArrayList<Double> axis) {
-        double minimum = axis.get(0);
-        for (int i = 0; i < axis.size(); i++) {
-            if (axis.get(i) < minimum) {
-                minimum = axis.get(i);
-            }
-        }
-        return minimum;
     }
 }
 
