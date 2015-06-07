@@ -1,42 +1,31 @@
 package drawing;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import loadformat.*;
-
 /**
  * Created by Briareus on 25.05.2015.
  */
-public class HistogramDrawingPanelForXaxis extends JPanel
+public class HistogramDrawingPanelForXAxis extends JPanel
 {
-    private final Format datenmodell; //Übernahme von loadformat.Format Klasse; muss nicht Bezeichnung datenmodell haben
-    private String line;
+    private Format DataModel;
     private int indexVariableX = 0;
-    private int indexVariableY = 1;
-    private String xlabel;
-    private String ylabel;
 
-    public HistogramDrawingPanelForXaxis(Format datenmodell)
+    public HistogramDrawingPanelForXAxis(Format DataModel)
     {
-        this.datenmodell = datenmodell;
+        this.DataModel = DataModel;
     }
 
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        //Instanzen
-        ArrayList arrayX = datenmodell.getListe().get(indexVariableX).getValues();
+        ArrayList<Double> arrayX = DataModel.getList().get(indexVariableX).getValues();
         double xMaximum = calculateMaximum(arrayX);
         double xMinimum = calculateMinimum(arrayX);
         double contentHeight;
         int totalValues = getTotalValues(arrayX);
-        //setXlabel(xlabel = datenmodell.getListe().get(indexVariableX).getName());
-
-        //ylabel = datenmodell.getListe().get(indexVariableY).getName();
         int howManyBins;
 
-        //Klassenanzahl berechnen
         if (totalValues <= 500)
         {
             howManyBins = (int) Math.round(Math.sqrt(totalValues));
@@ -46,9 +35,8 @@ public class HistogramDrawingPanelForXaxis extends JPanel
             howManyBins = 20;
         }
 
-        double modulus = ((xMaximum - xMinimum) / howManyBins); //Wie breit ist Intervall mit den Werten
+        double modulus = ((xMaximum - xMinimum) / howManyBins);
 
-        //Anzahl Werte pro Intervall berechnen
         double frequency = 0.0;
         double upperLimitInterval = xMinimum + modulus;
         ArrayList<Double> arrayFrequency = new ArrayList<>();
@@ -56,7 +44,7 @@ public class HistogramDrawingPanelForXaxis extends JPanel
         {
             for (int a = 0; a < totalValues; a++)
             {
-                double z = (double) arrayX.get(a);
+                double z = arrayX.get(a);
                 if (z >= xMinimum && z < upperLimitInterval)
                 {
                     frequency++;
@@ -69,14 +57,12 @@ public class HistogramDrawingPanelForXaxis extends JPanel
             upperLimitInterval = xMinimum + modulus;
         }
 
-        //Test Histogramm mit einer loadformat.Variable
         int barWidth = getWidth() / howManyBins;
         contentHeight = calculateMaximum(arrayFrequency) + calculateMinimum(arrayFrequency);
         for (int i = 0; i < arrayFrequency.size(); i++)
         {
             double x_1 = arrayFrequency.get(i);
             int barHeight = (int) (x_1 * (getHeight() / contentHeight));
-            //so sein lassen
             int x = i * barWidth;
             int y = getHeight() - barHeight;
 
@@ -87,27 +73,19 @@ public class HistogramDrawingPanelForXaxis extends JPanel
         }
 
     }
-    //Index setzen für mehrere Variablen
+
     public void setIndexVariableX(int indexNumber)
     {
         indexVariableX = indexNumber;
         repaint();
     }
 
-    public void setIndexVariableY(int indexNumber)
-    {
-        indexVariableY = indexNumber;
-        repaint();
-    }
-
     public double calculateMaximum(ArrayList<Double> axis)
     {
         double maximum = axis.get(0);
-        for (int i = 0; i < axis.size(); i++)
-        {
-            if (axis.get(i) > maximum)
-            {
-                maximum = axis.get(i);
+        for (Double axisSize : axis) {
+            if (axisSize > maximum) {
+                maximum = axisSize;
             }
         }
         return maximum;
@@ -116,10 +94,9 @@ public class HistogramDrawingPanelForXaxis extends JPanel
     public double calculateMinimum(ArrayList<Double> axis)
     {
         double minimum = axis.get(0);
-        for (int i = 0; i < axis.size(); i++)
-        {
-            if (axis.get(i) < minimum) {
-                minimum = axis.get(i);
+        for (Double axisSize : axis) {
+            if (axisSize < minimum) {
+                minimum = axisSize;
             }
         }
         return minimum;
@@ -127,28 +104,13 @@ public class HistogramDrawingPanelForXaxis extends JPanel
 
     public int getTotalValues(ArrayList<Double> axis)
     {
-        int anzahl = 0;
+        int count = 0;
         for (int i = 0; i <= axis.size(); i++)
         {
-            anzahl = i;
+            count = i;
         }
-        return anzahl;
+        return count;
     }
 
-
-
-    public String getXlabel(int indexNumber)
-    {
-        indexVariableX = indexNumber;
-        String xlabel = datenmodell.getListe().get(indexVariableX).getName();
-        return xlabel;
     }
-
-    public String getYlabel()
-    {
-        String ylabel = datenmodell.getListe().get(indexVariableY).getName();
-        return ylabel;
-    }
-}
-
 
