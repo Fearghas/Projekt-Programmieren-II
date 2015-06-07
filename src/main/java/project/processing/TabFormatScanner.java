@@ -1,4 +1,5 @@
 package project.processing;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -14,14 +15,14 @@ public class TabFormatScanner implements FormatReader {
             return null;
         }
 
-        ArrayList<String> arrayLabel = new ArrayList<>();
+        ArrayList<String> arrayLabel = new ArrayList<String>();
         String[] numberOfVariables = fileScanner.nextLine().split("\\t");
-        int TotalVariables = 0;
-        TotalVariables = getTotalVariables(TotalVariables, numberOfVariables);
-        storeLabels(arrayLabel, TotalVariables, numberOfVariables);
-        ArrayList[] containerValues = createContainers(TotalVariables);
-        storeValues(fileScanner, TotalVariables, containerValues);
-        ArrayList<Variable> variablesList = createVariablesList(arrayLabel, TotalVariables, containerValues);
+        int totalVariables = 0;
+        totalVariables = getTotalVariables(totalVariables, numberOfVariables);
+        storeLabels(arrayLabel, totalVariables, numberOfVariables);
+        ArrayList[] containerValues = createContainers(totalVariables);
+        storeValues(fileScanner, totalVariables, containerValues);
+        ArrayList<Variable> variablesList = createVariablesList(arrayLabel, totalVariables, containerValues);
         return new Storage(arrayLabel, variablesList);
     }
 

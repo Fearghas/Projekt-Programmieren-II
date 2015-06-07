@@ -1,6 +1,5 @@
 package project.processing;
 
-public interface FormatReader
-{
+public interface FormatReader {
     Storage readFormat(String fileName);
 }

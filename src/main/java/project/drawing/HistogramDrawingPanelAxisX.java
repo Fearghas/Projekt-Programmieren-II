@@ -1,14 +1,13 @@
 package project.drawing;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import project.processing.Storage;
 
-public class HistogramDrawingPanelAxisX extends JPanel
-{
-    private Storage data;
+public class HistogramDrawingPanelAxisX extends JPanel {
+    private final Storage data;
     private int indexVariableX;
-    private int indexVariableY;
 
     public HistogramDrawingPanelAxisX(Storage data) {
         this.data = data;
@@ -18,9 +17,9 @@ public class HistogramDrawingPanelAxisX extends JPanel
         super.paintComponent(g);
 
         ArrayList<Double> arrayX = data.getValuesOfVariable().get(indexVariableX).getValues();
-        double xMaximum = calculateMaximum(arrayX);
-        double xMinimum = calculateMinimum(arrayX);
-        int totalValues = getTotalValues(arrayX);
+        double xMaximum = data.calculateMaximum(arrayX);
+        double xMinimum = data.calculateMinimum(arrayX);
+        int totalValues = data.getTotalValues(arrayX);
         int howManyBins;
 
         howManyBins = getHowManyBins(totalValues);
@@ -31,10 +30,10 @@ public class HistogramDrawingPanelAxisX extends JPanel
     private void drawBins(Graphics g, int howManyBins, ArrayList<Double> arrayFrequency) {
         double contentHeight;
         int barWidth = getWidth() / howManyBins;
-        contentHeight = calculateMaximum(arrayFrequency) + calculateMinimum(arrayFrequency);
+        contentHeight = data.calculateMaximum(arrayFrequency) + data.calculateMinimum(arrayFrequency);
         for (int i = 0; i < arrayFrequency.size(); i++) {
-            double x_1 = arrayFrequency.get(i);
-            int barHeight = (int) (x_1 * (getHeight() / contentHeight));
+            double getX = arrayFrequency.get(i);
+            int barHeight = (int) (getX * (getHeight() / contentHeight));
             int x = i * barWidth;
             int y = getHeight() - barHeight;
 
@@ -47,31 +46,34 @@ public class HistogramDrawingPanelAxisX extends JPanel
 
     private ArrayList<Double> createBins(ArrayList<Double> arrayX, double xMaximum,
                                          double xMinimum, int totalValues, int howManyBins) {
-        double modulus = ((xMaximum - xMinimum) / howManyBins);
-        double frequency = 0.0;
-        double upperLimitInterval = xMinimum + modulus;
-        ArrayList<Double> arrayFrequency = new ArrayList<>();
+        double intervalLength = ((xMaximum - xMinimum) / howManyBins);
+        final double START_VALUE_FREQUENCY = 0.0;
+        double frequency = START_VALUE_FREQUENCY;
+        double nextInterval = xMinimum + intervalLength;
+        ArrayList<Double> arrayFrequency = new ArrayList<Double>();
         for (int i = 0; i < howManyBins; i++) {
             for (int a = 0; a < totalValues; a++) {
                 double z = arrayX.get(a);
-                if (z >= xMinimum && z < upperLimitInterval) {
+                if (z >= xMinimum && z < nextInterval) {
                     frequency++;
                 }
             }
             arrayFrequency.add(frequency);
-            frequency = 0.0;
-            xMinimum = upperLimitInterval;
-            upperLimitInterval = xMinimum + modulus;
+            frequency = START_VALUE_FREQUENCY;
+            xMinimum = nextInterval;
+            nextInterval = xMinimum + intervalLength;
         }
         return arrayFrequency;
     }
 
     private int getHowManyBins(int totalValues) {
         int howManyBins;
-        if (totalValues <= 500) {
+        final int TRESHOLD_VALUE = 500;
+        final int BINS_IF_OVER_TRESHOLD = 20;//aus http://de.wikipedia.org/wiki/Histogramm
+        if (totalValues <= TRESHOLD_VALUE) {
             howManyBins = (int) Math.round(Math.sqrt(totalValues));
         } else {
-            howManyBins = 20; //aus Wikipedia entnommen, wenn Anzahl Werte > 500
+            howManyBins = BINS_IF_OVER_TRESHOLD;
         }
         return howManyBins;
     }
@@ -82,41 +84,13 @@ public class HistogramDrawingPanelAxisX extends JPanel
     }
 
     public void setIndexVariableY(int indexNumber) {
-        indexVariableY = indexNumber;
+        int indexVariableY = indexNumber;
         repaint();
     }
 
     public String getXlabel(int indexNumber) {
         indexVariableX = indexNumber;
-        String ylabel = data.getValuesOfVariable().get(indexVariableX).getName();
-        return ylabel;
-    }
-
-    public double calculateMaximum(ArrayList<Double> axis) {
-        double maximum = axis.get(0);
-        for (Double axisItem : axis) {
-            if (axisItem > maximum) {
-                maximum = axisItem;
-            }
-        }
-        return maximum;
-    }
-
-    public double calculateMinimum(ArrayList<Double> axis) {
-        double minimum = axis.get(0);
-        for (Double axisItem : axis) {
-            if (axisItem < minimum) {
-                minimum = axisItem;
-            }
-        }
-        return minimum;
-    }
-
-    public int getTotalValues(ArrayList<Double> axis) {
-        int count = 0;
-        for (int i = 0; i <= axis.size(); i++) {
-            count = i;
-        }
-        return count;
+        String xLabel = data.getValuesOfVariable().get(indexVariableX).getName();
+        return xLabel;
     }
 }

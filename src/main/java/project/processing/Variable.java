@@ -1,4 +1,5 @@
 package project.processing;
+
 import java.util.ArrayList;
 
 public class Variable {

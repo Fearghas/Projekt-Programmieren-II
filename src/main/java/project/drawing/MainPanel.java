@@ -1,81 +1,94 @@
 package project.drawing;
+
 import project.processing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class MainPanel extends JFrame
-{
-    JFrame histogramFrameAxisX;
-    JFrame histogramFrameAxisY;
+public class MainPanel extends JFrame {
+    private JFrame histogramFrameAxisX;
+    private JFrame histogramFrameAxisY;
 
     public void createMainPanel() {
         this.setTitle("Plot and Histogram Viewer");
         this.setSize(300, 100);
+        this.setResizable(false);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenuOne = new JMenu("File");
         JMenu fileMenuTwo = new JMenu("Application");
         JMenuItem openItem = new JMenuItem("Open");
         JMenuItem closeItem = new JMenuItem("Close");
-        addMainPanelOptions(menuBar, fileMenuOne, fileMenuTwo, openItem, closeItem);
-        this.add(menuBar, BorderLayout.NORTH);
+        fileMenuOne.add(openItem);
+        fileMenuTwo.add(closeItem);
+        menuBar.add(fileMenuOne);
+        menuBar.add(fileMenuTwo);
+        JLabel message = new JLabel();
 
-        openItem.addActionListener(e ->
-        {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-            int returnValue = fileChooser.showOpenDialog(null);
-            File file = fileChooser.getSelectedFile();
-
-            try {
-                String pathname = file.getCanonicalPath();
-                int defaultPointSize = 3;
-                int defaultIndexAxisX = 0;
-                int defaultIndexAxisY = 1;
-                if (pathname.contains("txt")) {
-                    FormatReader loader = new TabFormatScanner();
-                    Storage tab = loader.readFormat(pathname);
-                    JFrame scatterPlotFrame = new JFrame(pathname);
-                    ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(tab);
-                    createScatterPlot(defaultPointSize, scatterPlotFrame, plot);
-                    histogramFrameAxisX = new JFrame();
-                    HistogramDrawingPanelAxisX xPlot = new HistogramDrawingPanelAxisX(tab);
-                    createHistogramAxisX(defaultIndexAxisX, xPlot);
-                    histogramFrameAxisY = new JFrame();
-                    HistogramDrawingPanelAxisY yPlot = new HistogramDrawingPanelAxisY(tab);
-                    createHistogramAxisY(defaultIndexAxisY, yPlot);
-                    addOptionsBar(scatterPlotFrame, plot, xPlot, yPlot, tab.getLabel(), tab);
-                } else if (pathname.contains("lin")) {
-                    FormatReader loader = new RowFormatScanner();
-                    Storage lin = loader.readFormat(pathname);
-                    JFrame scatterPlotFrame = new JFrame(pathname);
-                    ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(lin);
-                    createScatterPlot(defaultPointSize, scatterPlotFrame, plot);
-                    histogramFrameAxisX = new JFrame();
-                    HistogramDrawingPanelAxisX xPlot = new HistogramDrawingPanelAxisX(lin);
-                    createHistogramAxisX(defaultIndexAxisX, xPlot);
-                    histogramFrameAxisY = new JFrame();
-                    HistogramDrawingPanelAxisY yPlot = new HistogramDrawingPanelAxisY(lin);
-                    createHistogramAxisY(defaultIndexAxisY, yPlot);
-                    addOptionsBar(scatterPlotFrame, plot, xPlot, yPlot, lin.getLabel(), lin);
+        openItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    if (file != null) {
+                        String pathname = file.getPath();
+                        message.setText("'Valid file selected!'");
+                        int defaultPointSize = 3;
+                        int defaultIndexAxisX = 0;
+                        int defaultIndexAxisY = 1;
+                        if (pathname.contains("txt")) {
+                            FormatReader loader = new TabFormatScanner();
+                            Storage tab = loader.readFormat(pathname);
+                            JFrame scatterPlotFrame = new JFrame(pathname);
+                            ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(tab);
+                            createScatterPlot(defaultPointSize, scatterPlotFrame, plot);
+                            histogramFrameAxisX = new JFrame();
+                            HistogramDrawingPanelAxisX xPlot = new HistogramDrawingPanelAxisX(tab);
+                            createHistogramAxisX(defaultIndexAxisX, xPlot);
+                            histogramFrameAxisY = new JFrame();
+                            HistogramDrawingPanelAxisY yPlot = new HistogramDrawingPanelAxisY(tab);
+                            createHistogramAxisY(defaultIndexAxisY, yPlot);
+                            addOptionsBar(scatterPlotFrame, plot, xPlot, yPlot, tab.getLabel(), tab);
+                        } else if (pathname.contains("lin")) {
+                            FormatReader loader = new RowFormatScanner();
+                            Storage lin = loader.readFormat(pathname);
+                            JFrame scatterPlotFrame = new JFrame(pathname);
+                            ScatterplotDrawingPanel plot = new ScatterplotDrawingPanel(lin);
+                            createScatterPlot(defaultPointSize, scatterPlotFrame, plot);
+                            histogramFrameAxisX = new JFrame();
+                            HistogramDrawingPanelAxisX xPlot = new HistogramDrawingPanelAxisX(lin);
+                            createHistogramAxisX(defaultIndexAxisX, xPlot);
+                            histogramFrameAxisY = new JFrame();
+                            HistogramDrawingPanelAxisY yPlot = new HistogramDrawingPanelAxisY(lin);
+                            createHistogramAxisY(defaultIndexAxisY, yPlot);
+                            addOptionsBar(scatterPlotFrame, plot, xPlot, yPlot, lin.getLabel(), lin);
+                        } else {
+                            message.setText("'File is not supported! Choose *.txt or *.lin.'");
+                        }
+                    }
                 } else {
-                    System.out.println("File is not supported!");
+                    message.setText("'No file selected!'");
                 }
-            } catch (IOException e1) {
-
-                e1.printStackTrace();
-
             }
         });
 
-        closeItem.addActionListener(e -> {
-            System.exit(0);
+        closeItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
         });
+
+        message.setText("'Created by Andrea Hassler and Bryan Freiermuth'");
+        message.setHorizontalAlignment(SwingConstants.CENTER);
+        this.add(message);
+        this.add(menuBar, BorderLayout.NORTH);
     }
 
     private void createHistogramAxisY(int defaultIndexAxisY, HistogramDrawingPanelAxisY yPlot) {
@@ -103,14 +116,6 @@ public class MainPanel extends JFrame
         scatterplotFrame.setLocationRelativeTo(null);
         scatterplotFrame.setVisible(true);
         scatterplotFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    }
-
-    private void addMainPanelOptions(JMenuBar menuBar, JMenu fileMenuOne, JMenu fileMenuTwo,
-                                     JMenuItem openItem, JMenuItem closeItem) {
-        fileMenuOne.add(openItem);
-        fileMenuTwo.add(closeItem);
-        menuBar.add(fileMenuOne);
-        menuBar.add(fileMenuTwo);
     }
 
     private void addOptionsBar(JFrame frame, ScatterplotDrawingPanel plot,
