@@ -17,4 +17,14 @@ public class Storage {
     public ArrayList<Variable> getValuesOfVariable() {
         return list;
     }
+
+    public double calculateMaximum(ArrayList<Double> axis) {
+        double maximum = axis.get(0);
+        for (Double axisItem : axis) {
+            if (axisItem > maximum) {
+                maximum = axisItem;
+            }
+        }
+        return maximum;
+    }
 }
