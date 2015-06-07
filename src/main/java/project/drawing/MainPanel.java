@@ -67,7 +67,9 @@ public class MainPanel extends JFrame
                     System.out.println("File is not supported!");
                 }
             } catch (IOException e1) {
-                //habs gelöscht, Du weissch beschtimmt, was innechunnt
+
+                e1.printStackTrace();
+
             }
         });
 
