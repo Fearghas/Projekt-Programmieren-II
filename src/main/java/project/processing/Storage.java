@@ -1,4 +1,4 @@
-package loadformat;
+package project.processing;
 import java.util.ArrayList;
 
 public class Storage {
@@ -14,7 +14,7 @@ public class Storage {
         return label;
     }
 
-    public ArrayList<Variable> getListe() {
+    public ArrayList<Variable> getValuesOfVariable() {
         return list;
     }
 }

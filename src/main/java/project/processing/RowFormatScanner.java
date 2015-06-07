@@ -1,22 +1,16 @@
-package loadformat;
+package project.processing;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class RowFormatScanner implements FormatReader
-{
+public class RowFormatScanner implements FormatReader {
     @Override
-    public Storage readFormat(String fileName)
-    {
+    public Storage readFormat(String fileName) {
         Scanner fileScanner;
-        try
-        {
+        try {
             fileScanner = new Scanner(new File(fileName));
-        }
-        catch (FileNotFoundException e)
-        {
-            String message = "File not found.";
+        } catch (FileNotFoundException e) {
             return null;
         }
 
@@ -29,16 +23,7 @@ public class RowFormatScanner implements FormatReader
         return new Storage(arrayLabel, variablesList);
     }
 
-    private ArrayList<Variable> createVariablesList(ArrayList<String> arrayLabel, int totalVariables, ArrayList[] containerValues) {
-        ArrayList<Variable> variablesList = new ArrayList();
-        for (int i = 0; i < totalVariables; i++)
-        {
-            variablesList.add(createVariable(arrayLabel.get(i), containerValues[i]));
-        }
-        return variablesList;
-    }
-
-    private void storeValues(Scanner fileScanner, int totalVariables, ArrayList[] containerValues) {
+        private void storeValues(Scanner fileScanner, int totalVariables, ArrayList[] containerValues) {
         String delimiter = fileScanner.nextLine();
         while (fileScanner.hasNextLine())
         {
@@ -55,23 +40,29 @@ public class RowFormatScanner implements FormatReader
 
     private ArrayList[] createContainers(int totalVariables) {
         ArrayList[] temporaryValuesList = new ArrayList[totalVariables];
-        for (int i = 0; i < totalVariables; i++)
-        {
+        for (int i = 0; i < totalVariables; i++) {
             temporaryValuesList[i] = new ArrayList<Double>();
         }
         return temporaryValuesList;
     }
 
     private void storeLabels(ArrayList<String> arrayLabel, Scanner fileScanner, int totalVariables) {
-        for (int i = 0; i < totalVariables; i++)
-        {
+        for (int i = 0; i < totalVariables; i++) {
             String numberOfVariables = fileScanner.nextLine();
             arrayLabel.add(numberOfVariables);
         }
     }
 
-    public Variable createVariable(String a, ArrayList<Double> b)
-    {
+    private ArrayList<Variable> createVariablesList(ArrayList<String> arrayLabel,
+                                                    int totalVariables, ArrayList[] containerValues) {
+        ArrayList<Variable> variablesList = new ArrayList();
+        for (int i = 0; i < totalVariables; i++) {
+            variablesList.add(createVariable(arrayLabel.get(i), containerValues[i]));
+        }
+        return variablesList;
+    }
+
+    private Variable createVariable(String a, ArrayList<Double> b) {
         return new Variable(a, b);
     }
 }
